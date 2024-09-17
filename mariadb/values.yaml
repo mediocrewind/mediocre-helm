@@ -1,0 +1,16 @@
+# base convetion configuration
+nameOverride: "mediocre-mariadb"
+fullnameOverride: "mediocre-mariadb"
+role: "database"
+
+# serviceaccount
+serviceAccount:
+  create: true
+#  automount: true
+#  annotations: {}
+  name: ""
+
+
+# configmaps
+configMapData:
+  MARIADB_ROOT_PASSWORD: "Hell0D4tabase!"
