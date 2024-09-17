@@ -3,7 +3,17 @@ entries:
   mariadb:
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2024-09-17T17:11:27.216032797+08:00"
+    created: "2024-09-17T22:25:18.344175541+08:00"
+    description: helm template for mariadb database
+    digest: 55a54d97c1b1903a80c7028eb9a1e4d56e17687c97798f8160e2797ac82b6045
+    name: mariadb
+    type: application
+    urls:
+    - mariadb-1.0.2.tgz
+    version: 1.0.2
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2024-09-17T22:25:18.343943772+08:00"
     description: helm template for mariadb database
     digest: 97c08a3c451dd7f0504ce5ee24787fcf06546029e316ee2728099dee780208ac
     name: mariadb
@@ -13,7 +23,7 @@ entries:
     version: 1.0.1
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2024-09-17T17:11:27.215844018+08:00"
+    created: "2024-09-17T22:25:18.343746758+08:00"
     description: helm template for mariadb database
     digest: 81c5fb4befe0460c6d6eac7db8e2ff4d43f8f6e8ce0837c90e7f47c74e4ec05b
     name: mariadb
@@ -21,4 +31,4 @@ entries:
     urls:
     - mariadb-1.0.0.tgz
     version: 1.0.0
-generated: "2024-09-17T17:11:27.215545911+08:00"
+generated: "2024-09-17T22:25:18.343454203+08:00"
