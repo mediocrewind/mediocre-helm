@@ -1,6 +1,6 @@
 # base convetion configuration
-nameOverride: "mediocre-mariadb"
-fullnameOverride: "mediocre-mariadb"
+nameOverride: "mediocre-db-mariadb"
+fullnameOverride: "mediocre-db-mariadb"
 role: "database"
 
 # serviceaccount
