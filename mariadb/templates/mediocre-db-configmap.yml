@@ -7,5 +7,4 @@ metadata:
 {{- with .Values.configMapData }}
 data:
   {{- toYaml . | nindent 2 }}
-{{- end}}
- 
+{{- end }}

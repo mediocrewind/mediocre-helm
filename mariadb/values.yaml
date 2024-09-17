@@ -3,14 +3,14 @@ nameOverride: "mediocre-db-mariadb"
 fullnameOverride: "mediocre-db-mariadb"
 role: "database"
 
+# ---------------------------------------------------------------------------------------------------------
 # serviceaccount
 serviceAccount:
   create: true
-#  automount: true
-#  annotations: {}
+  automount: true
   name: ""
 
-
+# ---------------------------------------------------------------------------------------------------------
 # configmaps
 configMapData:
   MARIADB_ROOT_PASSWORD: "Hell0D4tabase!"
