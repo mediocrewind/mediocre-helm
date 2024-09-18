@@ -1,4 +1,5 @@
-# base convetion configuration
+# ---------------------------------------------------------------------------------------------------------
+# base configuration
 nameOverride: "mediocre-db-mariadb"
 fullnameOverride: "mediocre-db-mariadb"
 role: "database"
@@ -6,11 +7,63 @@ role: "database"
 # ---------------------------------------------------------------------------------------------------------
 # serviceaccount
 serviceAccount:
+  name: ""
   create: true
   automount: true
-  name: ""
 
 # ---------------------------------------------------------------------------------------------------------
-# configmaps
-configMapData:
-  MARIADB_ROOT_PASSWORD: "Hell0D4tabase!"
+# configmap
+configMap:
+  data:
+    MARIADB_ROOT_PASSWORD: "Hell0D4tabase!"
+
+# ---------------------------------------------------------------------------------------------------------
+# role
+Role:
+  rules:
+    - apiGroups: [""]
+      resources: ["configmaps","secrets"]
+      verbs: ["list","get"]
+
+# ---------------------------------------------------------------------------------------------------------
+# statefulset
+Statefulset:
+  spec:
+    podManagementPolicy: "OrderedReady"
+    template:
+      spec:
+        containers:
+          main: 
+            name: "db-mariadb"
+            repository: "487835535578.dkr.ecr.ap-southeast-1.amazonaws.com/system-devops-ecr-mariadb"
+            tag: "latest"
+            pullPolicy: "Always"
+            resources:
+              requests:
+                memory: "500M"
+                cpu: 0.5
+              limits:
+                memory: "2G"
+                cpu: 1.8
+            volumeMounts:
+              - mountPath: /var/lib/mysql
+                name: db-data
+        volumes:
+          - name: db-data
+            hostPath:
+              path: /opt/kube/mariadb
+              type: Directory
+        securityContext:
+          fsgroup: 1000
+        imagePullSecrets:
+          - name: mediocre-ecr-login
+        tolerations:
+          - key: "platform/role"
+            operator: "Equal"
+            value: "database"
+            effect: "NoExecute"
+    replicas: 1
+    selector:
+      matchLabels:
+        platform/role: database
+  
