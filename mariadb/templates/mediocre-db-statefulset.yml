@@ -13,6 +13,7 @@ spec:
       labels:
         {{- include "mariadb.labels" . | nindent 8 }}
     spec:
+      serviceAccountName: {{ include "mariadb.fullname" . }}
       containers:
         - name: {{ .Values.StatefulSet.spec.template.spec.containers.main.name }}
           image: {{ .Values.StatefulSet.spec.template.spec.containers.main.repository }}:{{ .Values.StatefulSet.spec.template.spec.containers.main.tag }}
