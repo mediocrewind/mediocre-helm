@@ -1,0 +1,21 @@
+# ---------------------------------------------------------------------------------------------------------
+# base configuration
+nameOverride: "mediocre-svc-redis"
+fullnameOverride: "mediocre-svc-redis"
+role: "service"
+
+# ---------------------------------------------------------------------------------------------------------
+# serviceaccount
+ServiceAccount:
+  name: ""
+  create: true
+  annotations: {}
+  automount: true
+
+# ---------------------------------------------------------------------------------------------------------
+# role
+Role:
+  rules:
+    - apiGroups: [""]
+      resources: ["configmaps","secrets"]
+      verbs: ["list","get"]
