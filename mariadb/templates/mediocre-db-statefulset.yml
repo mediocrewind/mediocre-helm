@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Statefulset
 metadata:
   name: {{ include "mariadb.fullname" . }}
-  namespace: {{ .Values.namspace }}
+  namespace: {{ .Values.namespace }}
   labels:
     {{- include "mariadb.labels" . | nindent 4 }}
 spec:
