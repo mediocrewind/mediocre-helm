@@ -24,7 +24,7 @@ spec:
                 name: {{ include "mariadb.fullname" . }}
           volumeMounts:
             {{- toYaml .Values.StatefulSet.spec.template.spec.containers.main.volumeMounts | nindent 12 }}
-      volume:
+      volumes:
         {{- toYaml .Values.StatefulSet.spec.template.spec.volumes | nindent 8  }}
       securityContext:
         {{- toYaml .Values.StatefulSet.spec.template.spec.securityContext | nindent 8  }}
