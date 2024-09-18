@@ -68,3 +68,26 @@ StatefulSet:
       matchLabels:
         platform/role: database
   
+# ---------------------------------------------------------------------------------------------------------
+# service (cluster-ip)
+Service:
+  spec:
+    type: ClusterIP
+    ports:
+      - targetPort: 3306
+        port: 3306
+    clusterIP: None
+    selector:
+      platform/role: database
+
+# ---------------------------------------------------------------------------------------------------------
+# service (node)
+ServiceNode:
+  spec:
+    type: NodePort
+    ports:
+      - targetPort: 3306
+        port: 3306
+        nodePort: 30306
+    selector:
+      platform/role: database
