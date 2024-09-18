@@ -2,7 +2,6 @@
 # base configuration
 nameOverride: "mediocre-db-mariadb"
 fullnameOverride: "mediocre-db-mariadb"
-namespace: platform
 role: "database"
 
 
@@ -29,7 +28,7 @@ Role:
 
 # ---------------------------------------------------------------------------------------------------------
 # statefulset
-Statefulset:
+StatefulSet:
   spec:
     podManagementPolicy: "OrderedReady"
     template:

@@ -1,13 +1,12 @@
 apiVersion: apps/v1
-kind: Statefulset
+kind: StatefulSet
 metadata:
   name: {{ include "mariadb.fullname" . }}
-  namespace: {{ .Values.namespace }}
   labels:
     {{- include "mariadb.labels" . | nindent 4 }}
 spec:
   serviceName: {{ include "mariadb.fullname" . }}
-  podManagementPolicy: {{ .Values.Statefulset.spec.podManagementPolicy  }}
+  podManagementPolicy: {{ .Values.StatefulSet.spec.podManagementPolicy  }}
   template:
     metadata:
       name: {{ include "mariadb.fullname" . }}
@@ -15,25 +14,25 @@ spec:
         {{- include "mariadb.labels" . | nindent 8 }}
     spec:
       containers:
-        - name: {{ .Values.Statefulset.spec.template.spec.containers.main.name }}
-          image: {{ .Values.Statefulset.spec.template.spec.containers.main.repository }}:{{ .Values.Statefulset.spec.template.spec.containers.main.tag }}
-          pullPolicy: {{ .Values.Statefulset.spec.template.spec.containers.main.pullPolicy }}
+        - name: {{ .Values.StatefulSet.spec.template.spec.containers.main.name }}
+          image: {{ .Values.StatefulSet.spec.template.spec.containers.main.repository }}:{{ .Values.StatefulSet.spec.template.spec.containers.main.tag }}
+          pullPolicy: {{ .Values.StatefulSet.spec.template.spec.containers.main.pullPolicy }}
           resources:
-            {{- toYaml .Values.Statefulset.spec.template.spec.containers.main.resources | nindent 12 }}
+            {{- toYaml .Values.StatefulSet.spec.template.spec.containers.main.resources | nindent 12 }}
           envFrom:
             - configMapRef:
                 name: {{ include "mariadb.fullname" . }}
           volumeMounts:
-            {{- toYaml .Values.Statefulset.spec.template.spec.containers.main.volumeMounts | nindent 12 }}
+            {{- toYaml .Values.StatefulSet.spec.template.spec.containers.main.volumeMounts | nindent 12 }}
       volume:
-        {{- toYaml .Values.Statefulset.spec.template.spec.volumes | nindent 8  }}
+        {{- toYaml .Values.StatefulSet.spec.template.spec.volumes | nindent 8  }}
       securityContext:
-        {{- toYaml .Values.Statefulset.spec.template.spec.securityContext | nindent 8  }}
+        {{- toYaml .Values.StatefulSet.spec.template.spec.securityContext | nindent 8  }}
       imagePullSecrets:
-        {{- toYaml .Values.Statefulset.spec.template.spec.imagePullSecrets | nindent 8 }}
+        {{- toYaml .Values.StatefulSet.spec.template.spec.imagePullSecrets | nindent 8 }}
       tolerations:
-        {{- toYaml .Values.Statefulset.spec.template.spec.tolerations | nindent 8 }}
-  replicas: {{ .Values.Statefulset.spec.replicas }}
+        {{- toYaml .Values.StatefulSet.spec.template.spec.tolerations | nindent 8 }}
+  replicas: {{ .Values.StatefulSet.spec.replicas }}
   selector:
-    {{- toYaml .Values.Statefulset.spec.selector | nindent 4  }}
+    {{- toYaml .Values.StatefulSet.spec.selector | nindent 4  }}
     
