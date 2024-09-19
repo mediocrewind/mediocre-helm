@@ -83,4 +83,16 @@ StatefulSet:
     replicas: 1
     selector:
       matchLabels:
-        platform/role: service          
+        platform/role: service
+
+# ---------------------------------------------------------------------------------------------------------
+# service
+Service:
+  spec:
+    type: ClusterIP
+    ports:
+      - targetPort: 6379
+        port: 6379
+    clusterIP: None
+    selector:
+      platform/role: service
