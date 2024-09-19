@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "wordpress.fullname" . }}
+  labels:
+    {{- include "wordpress.labels" . | nindent 4 }}
+spec:
+  strategy:
+    {{- toYaml .Values.Deployment.spec.strategy | nindent 4 }}
+  template:
+    metadata:
+      name: {{ include "wordpress.fullname" . }}
+      labels:
+        {{- include "wordpress.labels" . | nindent 8 }}
+    spec:
+      serviceAccountName: {{ include "wordpress.fullname" . }}
+      containers:
+        {{- toYaml .Values.Deployment.spec.template.spec.containers | nindent 8 }}
+      volumes:
+        {{- toYaml .Values.Deployment.spec.template.spec.volumes | nindent 8 }}
+      securityContext:
+        {{- toYaml .Values.Deployment.spec.template.spec.securityContext | nindent 8 }}
+      imagePullSecrets:
+        {{- toYaml .Values.Deployment.spec.template.spec.imagePullSecrets | nindent 8 }}
+      tolerations:
+        {{- toYaml .Values.Deployment.spec.template.spec.tolerations | nindent 8 }}
+  replicas: {{ .Values.Deployment.spec.replicas }}
+  selector:
+    matchLabels:
+      {{- toYaml .Values.Deployment.spec.selector.matchLabels | nindent 6 }}
