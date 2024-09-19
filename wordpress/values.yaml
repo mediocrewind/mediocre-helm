@@ -24,7 +24,7 @@ Role:
 # configmap
 ConfigMap:
   data:
-    WORDPRESS_DB_HOST: mediocre-db-statefulset-0.mediocre-db.platform.svc.cluster.local
+    WORDPRESS_DB_HOST: mediocre-db-mariadb-0.mediocre-db-mariadb.platform.svc.cluster.local
     WORDPRESS_DB_USER: mediocre
     WORDPRESS_DB_PASSWORD: H3ll0Th3r3*_
     WORDPRESS_DB_NAME: mediocrewind
