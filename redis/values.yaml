@@ -58,7 +58,7 @@ StatefulSet:
             volumeMounts:
               - mountPath: /data
                 name: redis-data
-              - mountPatch: /usr/local/etc/redis/redis.conf
+              - mountPath: /usr/local/etc/redis/redis.conf
                 name: redis-config
                 subPath: redis.conf
         volumes:
