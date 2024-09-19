@@ -3,7 +3,7 @@ entries:
   mariadb:
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2024-09-19T22:54:32.938274378+08:00"
+    created: "2024-09-19T23:13:50.899294707+08:00"
     description: helm template for mariadb database
     digest: 3727f599abcd7ecd9136ca8894faefbe6b419a92db7487c4525ac36952a0d8ba
     name: mariadb
@@ -13,7 +13,7 @@ entries:
     version: 1.0.9
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2024-09-19T22:54:32.937848482+08:00"
+    created: "2024-09-19T23:13:50.898876347+08:00"
     description: helm template for mariadb database
     digest: 93cb47262617bbe24d59fdc1dc03cfd48c4684114443b279a21cd33279a4d93a
     name: mariadb
@@ -23,7 +23,7 @@ entries:
     version: 1.0.8
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2024-09-19T22:54:32.937419611+08:00"
+    created: "2024-09-19T23:13:50.898441146+08:00"
     description: helm template for mariadb database
     digest: 7f940b48a9eaf2af5ec8fda737a05e4205736d4951a6973f8ad9e79619c2c550
     name: mariadb
@@ -33,7 +33,7 @@ entries:
     version: 1.0.7
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2024-09-19T22:54:32.937051554+08:00"
+    created: "2024-09-19T23:13:50.898078622+08:00"
     description: helm template for mariadb database
     digest: 9748ce145c0cc05e4b10686320b47fba7dad0c29fd080adcda3051f8e26f5099
     name: mariadb
@@ -43,7 +43,7 @@ entries:
     version: 1.0.6
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2024-09-19T22:54:32.936685562+08:00"
+    created: "2024-09-19T23:13:50.897698876+08:00"
     description: helm template for mariadb database
     digest: 3b8b61798d3afa6e23ff3238b37785e3d026079502410ce24b6f38a30116ea42
     name: mariadb
@@ -53,7 +53,7 @@ entries:
     version: 1.0.5
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2024-09-19T22:54:32.936315953+08:00"
+    created: "2024-09-19T23:13:50.897333326+08:00"
     description: helm template for mariadb database
     digest: 88b701dadfe16e19e847cb9f6af19dc9712d1c388804bd886897da8f5f3fb22b
     name: mariadb
@@ -63,7 +63,7 @@ entries:
     version: 1.0.4
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2024-09-19T22:54:32.935907671+08:00"
+    created: "2024-09-19T23:13:50.896933121+08:00"
     description: helm template for mariadb database
     digest: 928e063614823188e069559b194a83685bf84045abc3f8e7db49811828947519
     name: mariadb
@@ -73,7 +73,7 @@ entries:
     version: 1.0.3
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2024-09-19T22:54:32.935500711+08:00"
+    created: "2024-09-19T23:13:50.896491838+08:00"
     description: helm template for mariadb database
     digest: 705ba0f7f23a4de36e63a09846c1c52cff312910e23f738efb3969453bdcd9c6
     name: mariadb
@@ -83,7 +83,7 @@ entries:
     version: 1.0.2
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2024-09-19T22:54:32.935124559+08:00"
+    created: "2024-09-19T23:13:50.896063921+08:00"
     description: helm template for mariadb database
     digest: 97c08a3c451dd7f0504ce5ee24787fcf06546029e316ee2728099dee780208ac
     name: mariadb
@@ -93,7 +93,7 @@ entries:
     version: 1.0.1
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2024-09-19T22:54:32.934938086+08:00"
+    created: "2024-09-19T23:13:50.89575059+08:00"
     description: helm template for mariadb database
     digest: 81c5fb4befe0460c6d6eac7db8e2ff4d43f8f6e8ce0837c90e7f47c74e4ec05b
     name: mariadb
@@ -104,7 +104,7 @@ entries:
   redis:
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2024-09-19T22:54:32.939447086+08:00"
+    created: "2024-09-19T23:13:50.900609638+08:00"
     description: helm chart template for redis cache
     digest: 30d69c78974709318d476ee1966537e3ae546743b7cf3704404ed4ca7e23b6a4
     name: redis
@@ -114,7 +114,7 @@ entries:
     version: 1.0.3
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2024-09-19T22:54:32.939046168+08:00"
+    created: "2024-09-19T23:13:50.900153046+08:00"
     description: helm chart template for redis cache
     digest: 88ddbcac6f928f3d48b9194cac56efdc06e0144ffc60c28a73713d6d14d568b9
     name: redis
@@ -124,7 +124,7 @@ entries:
     version: 1.0.2
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2024-09-19T22:54:32.938653084+08:00"
+    created: "2024-09-19T23:13:50.899741901+08:00"
     description: helm chart template for redis cache
     digest: f2a9146de2ba122583622a75eba6ac1cdc2fa29a201f49f1f795ba7000deb8b3
     name: redis
@@ -135,7 +135,17 @@ entries:
   wordpress:
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2024-09-19T22:54:32.940653979+08:00"
+    created: "2024-09-19T23:13:50.902317701+08:00"
+    description: helm chart template for wordpress application
+    digest: 23d06644ec58b51c4aa4f0b0ed3b0436f0563cbde0547f0f420a16e4eca111b2
+    name: wordpress
+    type: application
+    urls:
+    - wordpress-1.0.3.tgz
+    version: 1.0.3
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2024-09-19T23:13:50.901839428+08:00"
     description: helm chart template for wordpress application
     digest: 9e8b7bc1df121d4a3309fd322fe15bae8a4108897538492d28c0a0aa88a57240
     name: wordpress
@@ -145,7 +155,7 @@ entries:
     version: 1.0.2
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2024-09-19T22:54:32.940244865+08:00"
+    created: "2024-09-19T23:13:50.901423914+08:00"
     description: helm chart template for wordpress application
     digest: 1a47cc4f734eb755414c4f26b39cbbb56ff563e79cc772c69b36f450f9f027a0
     name: wordpress
@@ -155,7 +165,7 @@ entries:
     version: 1.0.1
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2024-09-19T22:54:32.939858614+08:00"
+    created: "2024-09-19T23:13:50.901015464+08:00"
     description: helm chart template for wordpress application
     digest: 7d1bdcfc93ef4ba2b69d6b877bd051ffa01799de4e8444a6fdd2a315edfe2459
     name: wordpress
@@ -163,4 +173,4 @@ entries:
     urls:
     - wordpress-1.0.0.tgz
     version: 1.0.0
-generated: "2024-09-19T22:54:32.93465988+08:00"
+generated: "2024-09-19T23:13:50.895342009+08:00"

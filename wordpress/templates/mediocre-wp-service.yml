@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "wordpress.fullname" . }}
+  labels:
+    {{- include "wordpress.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.Service.spec.type }}
+  ports:
+    {{- toYaml .Values.Service.spec.ports | nindent 4 }}
+  selector:
+    {{- toYaml .Values.Service.spec.selector | nindent 4 }}
