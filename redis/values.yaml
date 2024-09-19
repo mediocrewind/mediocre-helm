@@ -19,3 +19,68 @@ Role:
     - apiGroups: [""]
       resources: ["configmaps","secrets"]
       verbs: ["list","get"]
+
+# ---------------------------------------------------------------------------------------------------------
+# configmap
+ConfigMap:
+  data:
+    redisConf: |-
+      maxclients 2048
+      maxmemory 3000000000
+      save 900 1
+      save 300 10
+      save 60 10000
+      stop-writes-on-bgsave-error yes
+      rdbcompression yes
+      rdbchecksum yes
+      dbfilename dump.rdb
+      dir /data/
+
+# ---------------------------------------------------------------------------------------------------------
+# statefulset
+StatefulSet:
+  spec:
+    podManagementPolicy: "OrderedReady"
+    template:
+      spec:
+        containers:
+          main:
+            name: "svc-redis"
+            repository: "487835535578.dkr.ecr.ap-southeast-1.amazonaws.com/mediocrewind-core-ecr-svc-redis"
+            tag: "latest"
+            resources:
+              requests:
+                memory: "500M"
+                cpu: 0.5
+              limits:
+                memory: "3G"
+                cpu: 1.8
+            volumeMounts:
+              - mountPath: /data
+                name: redis-data
+              - mountPatch: /usr/local/etc/redis/redis.conf
+                name: redis-config
+                subPath: redis.conf
+        volumes:
+          - name: redis-data
+            hostPath:
+              path: /opt/kube/redis
+              type: Directory
+          - name: redis-config
+            configMap:
+              name: mediocre-svc-redis
+        securityContext:
+          fsGroup: 1000
+        imagePullSecrets:
+          - name: mediocre-ecr-login
+        tolerations:
+          - key: "platform/role"
+            operator: "Equal"
+            value: "service"
+            effect: "NoExecute"
+        nodeSelector:
+          platform/role: service
+    replicas: 1
+    selector:
+      matchLabels:
+        platform/role: service          

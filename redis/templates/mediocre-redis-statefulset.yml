@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ include "redis.fullname" . }}
+  labels:
+    {{- include "redis.labels" . | nindent 4 }}
+spec:
+  serviceName: {{ include "redis.fullname" . }}
+  podManagementPolicy: {{ .Values.StatefulSet.spec.podManagementPolicy }}
+  template:
+    metadata:
+      name: {{ include "redis.fullname" . }}
+      labels:
+        {{- include "redis.labels" . | nindent 8 }}
+    spec:
+      serviceAccountName: {{ include "redis.fullname" . }}
+      containers:
+        - name: {{ .Values.StatefulSet.spec.template.spec.containers.main.name }}
+          image: {{ .Values.StatefulSet.spec.template.spec.containers.main.repository }}:{{ .Values.StatefulSet.spec.template.spec.containers.main.tag }}
+          resources:
+            {{- toYaml .Values.StatefulSet.spec.template.spec.containers.main.resources | nindent 12 }}
+          volumeMounts:
+            {{- toYaml .Values.StatefulSet.spec.template.spec.containers.main.volumeMounts | nindent 12 }}
+      volumes:
+        {{- toYaml .Values.StatefulSet.spec.template.spec.volumes | nindent 8 }}
+      securityContext:
+        {{- toYaml .Values.StatefulSet.spec.template.spec.securityContext | nindent 8 }}
+      imagePullSecrets:
+        {{- toYaml .Values.StatefulSet.spec.template.spec.imagePullSecrets | nindent 8 }}
+      tolerations:
+        {{- toYaml .Values.StatefulSet.spec.template.spec.tolerations | nindent 8 }}
+      nodeSelector:
+        {{- toYaml .Values.StatefulSet.spec.template.spec.nodeSelector | nindent 8 }}
+  replicas: {{ .Values.StatefulSet.spec.replicas }}
+  selector:
+    {{- toYaml .Values.StatefulSet.spec.selector | nindent 4 }}
