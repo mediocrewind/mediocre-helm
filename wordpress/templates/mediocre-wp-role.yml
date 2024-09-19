@@ -1,0 +1,6 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: {{ include "wordpress.fullname" . }}
+rules:
+  {{- toYaml .Values.Role.rules | nindent 2  }}
