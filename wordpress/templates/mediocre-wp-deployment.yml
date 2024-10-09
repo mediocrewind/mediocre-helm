@@ -13,18 +13,26 @@ spec:
       labels:
         {{- include "wordpress.labels" . | nindent 8 }}
     spec:
-      serviceAccountName: {{ include "wordpress.fullname" . }}
+      serviceAccountName: {{ include "wordpress.serviceAccountName" . }}
+      initContainers:
       containers:
-        {{- toYaml .Values.Deployment.spec.template.spec.containers | nindent 8 }}
+        - name: {{ .Values.Deployment.spec.template.spec.containers.main.name }}
+          image: {{ .Values.Deployment.spec.template.spec.containers.main.image }}
+          resources:
+            {{- toYaml .Values.Deployment.spec.template.spec.containers.main.resources | nindent 12 }}
+          envFrom:
+            - configMapRef:
+                name: {{ include "wordpress.fullname" . }}
+          volumeMounts:
+            {{- toYaml .Values.Deployment.spec.template.spec.containers.main.volumeMounts | nindent 12 }}
       volumes:
-        {{- toYaml .Values.Deployment.spec.template.spec.volumes | nindent 8 }}
+        {{- toYaml .Values.Deployment.spec.template.spec.volumes | nindent 8  }}
       securityContext:
         {{- toYaml .Values.Deployment.spec.template.spec.securityContext | nindent 8 }}
       imagePullSecrets:
-        {{- toYaml .Values.Deployment.spec.template.spec.imagePullSecrets | nindent 8 }}
+        {{- toYaml .Values.Deployment.spec.template.spec.imagePullSecrets | nindent 8  }}
       tolerations:
         {{- toYaml .Values.Deployment.spec.template.spec.tolerations | nindent 8 }}
   replicas: {{ .Values.Deployment.spec.replicas }}
   selector:
-    matchLabels:
-      {{- toYaml .Values.Deployment.spec.selector.matchLabels | nindent 6 }}
+    {{- toYaml .Values.Deployment.spec.selector | nindent 4 }}

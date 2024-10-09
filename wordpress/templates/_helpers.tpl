@@ -54,7 +54,7 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 {{/*
 Create the name of the service account to use
 */}}
-{{- define "wordpress.ServiceAccountName" -}}
+{{- define "wordpress.serviceAccountName" -}}
 {{- if .Values.ServiceAccount.create }}
 {{- default (include "wordpress.fullname" .) .Values.ServiceAccount.name }}
 {{- else }}

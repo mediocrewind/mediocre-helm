@@ -13,7 +13,7 @@ ServiceAccount:
   automount: true
 
 # ---------------------------------------------------------------------------------------------------------
-# serviceaccount
+# role
 Role:
   rules:
     - apiGroups: [""]
@@ -24,7 +24,7 @@ Role:
 # configmap
 ConfigMap:
   data:
-    WORDPRESS_DB_HOST: mediocre-db-mariadb-0.mediocre-db-mariadb.platform.svc.cluster.local
+    WORDPRESS_DB_HOST: mediocre-db-statefulset-0.mediocre-db.platform.svc.cluster.local
     WORDPRESS_DB_USER: mediocre
     WORDPRESS_DB_PASSWORD: H3ll0Th3r3*_
     WORDPRESS_DB_NAME: mediocrewind
@@ -40,8 +40,10 @@ Deployment:
         maxUnavailable: 1
     template:
       spec:
+        initContainers:
         containers:
-          - name: app-wordpress
+          main:
+            name: app-wordpress
             image: 487835535578.dkr.ecr.ap-southeast-1.amazonaws.com/mediocrewind-core-ecr-app-wordpress:latest
             resources:
               requests:
@@ -50,9 +52,6 @@ Deployment:
               limits:
                 memory: "1G"
                 cpu: 1.8
-            envFrom:
-              - configMapRef:
-                  name: mediocre-app-wp
             volumeMounts:
               - mountPath: /var/www/html
                 name: wp-data
@@ -62,7 +61,7 @@ Deployment:
               path: /opt/kube/wordpress
               type: Directory
         securityContext:
-          fsGroup: 1000      
+          fsgroup: 1000
         imagePullSecrets:
           - name: mediocre-ecr-login
         tolerations:
@@ -75,14 +74,4 @@ Deployment:
       matchLabels:
         platform/role: application
 
-# ---------------------------------------------------------------------------------------------------------
-# service
-Service:
-  spec:
-    type: NodePort
-    ports:
-      - targetPort: 80
-        port: 80
-        nodePort: 30080
-    selector:
-      platform/role: application
+
