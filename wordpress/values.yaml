@@ -74,4 +74,15 @@ Deployment:
       matchLabels:
         platform/role: application
 
+# ---------------------------------------------------------------------------------------------------------
+# service
+Service:
+  spec:
+    type: NodePort
+    ports:
+      - targetPort: 80
+        port: 80
+        nodePort: 30080
+    selector:
+      platform/role: application
 
