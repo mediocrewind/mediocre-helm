@@ -61,7 +61,7 @@ Deployment:
               path: /opt/kube/wordpress
               type: Directory
         securityContext:
-          fsgroup: 1000
+          fsGroup: 1000
         imagePullSecrets:
           - name: mediocre-ecr-login
         tolerations:

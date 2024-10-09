@@ -5,7 +5,6 @@ metadata:
 subjects:
   - kind: ServiceAccount
     name: {{ include "wordpress.serviceAccountName" . }}
-    apiGroup: rbac.authorization.k8s.io
 roleRef:
   kind: Role
   name: {{ include "wordpress.fullname" . }}
