@@ -3,4 +3,4 @@ kind: Role
 metadata:
   name: {{ include "wordpress.fullname" . }}
 rules:
-  {{- toYaml .Values.Role.rules | nindent 2  }}
+  {{- toYaml .Values.Role.rules | nindent 2 }}

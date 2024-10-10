@@ -1,0 +1,67 @@
+# ---------------------------------------------------------------------------------------------------------
+# base configuration
+nameOverride: "mediocre-app-keycloak"
+fullnameOverride: "mediocre-app-keycloak"
+role: "application"
+
+# ---------------------------------------------------------------------------------------------------------
+# serviceaccount
+serviceAccount:
+  name: ""
+  create: true
+  automount: true
+
+# ---------------------------------------------------------------------------------------------------------
+# role
+Role:
+  rules:
+    - apiGroups: [""]
+      resources: ["configmaps","secrets"]
+      verbs: ["list","get"]
+
+# ---------------------------------------------------------------------------------------------------------
+# deployment
+Deployment:
+  spec:
+    template:
+      spec:
+        containers:
+          main:
+            name: keycloak
+            image: quay.io/keycloak/keycloak:26.0.0
+            args: ["start-dev"]
+            env:
+              - name: KEYCLOAK_ADMIN
+                value: "admin"
+              - name: KEYCLOAK_ADMIN_PASSWORD
+                value: "admin"
+              - name: KC_PROXY
+                value: "edge"
+            ports:
+              - name: http
+                containerPort: 8080
+            readinessProbe:
+              httpGet:
+                path: /realms/master
+                port: 8080
+        tolerations:
+          - key: "platform/role"
+            operator: "Equal"
+            value: "application"
+            effect: "NoExecute"
+    replicas: 1
+    selector:
+      matchLabels:
+        platform/role: application
+
+# ---------------------------------------------------------------------------------------------------------
+# service
+Service:
+  spec:
+    type: NodePort
+    ports:
+      - name: http
+        port: 8080
+        targetPort: 8080
+    selector:
+      app.kubernetes.io/name: mediocre-app-keycloak
