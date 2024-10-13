@@ -33,6 +33,8 @@ spec:
         {{- toYaml .Values.Deployment.spec.template.spec.imagePullSecrets | nindent 8  }}
       tolerations:
         {{- toYaml .Values.Deployment.spec.template.spec.tolerations | nindent 8 }}
+  {{- if not .Values.HorizontalPodAutoscaler.enabled  }}
   replicas: {{ .Values.Deployment.spec.replicas }}
+  {{- end }}
   selector:
     {{- toYaml .Values.Deployment.spec.selector | nindent 4 }}

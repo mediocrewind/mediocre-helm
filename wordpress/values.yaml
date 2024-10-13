@@ -86,3 +86,13 @@ Service:
     selector:
       platform/role: application
 
+# ---------------------------------------------------------------------------------------------------------
+# horizontalpodautoscaler
+HorizontalPodAutoscaler:
+  enabled: true
+  spec:
+    minReplicas: 1
+    maxReplicas: 4
+    metrics:
+      targetCPUUtilizationPercentage: 70
+      targetMemoryUtilizationPercentage: 85
