@@ -2,7 +2,7 @@
 # base configuration
 nameOverride: "mediocre-system-metrics"
 fullnameOverride: "mediocre-system-metrics"
-role: "database"
+role: "application"
 namespace: kube-system
 
 # ---------------------------------------------------------------------------------------------------------
