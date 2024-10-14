@@ -72,15 +72,21 @@ Deployment:
               port: https
               scheme: HTTPS
             periodSeconds: 10
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+            readonlyRootFilesystem: true
+          args:
+            - --cert-dir=/tmp
+            - --secure-port=10250
+            - --kubelet-preferred-address-types=InternalIP,ExternalIP,Hostname
+            - --kubelet-use-node-status-port
+            - --metric-resolution=15s
         volumes:
           - name: tmp-dir
             emptyDir: {}
-        securityContext:
-          allowPrivilegeEscalation: false
-          capabilities:
-            drop:
-              - ALL
-          readonlyRootFilesystem: true
         tolerations:
           - key: "platform/role"
             operator: "Equal"

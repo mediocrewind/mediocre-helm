@@ -30,10 +30,12 @@ spec:
             {{- toYaml .Values.Deployment.spec.template.spec.containers.readinessProbe | nindent 12 }}
           livenessProbe:
             {{- toYaml .Values.Deployment.spec.template.spec.containers.livenessProbe | nindent 12 }}
+          securityContext:
+            {{- toYaml .Values.Deployment.spec.template.spec.containers.securityContext | nindent 12 }}
+          args:
+            {{- toYaml .Values.Deployment.spec.template.spec.containers.args | nindent 12 }}
       volumes:
         {{- toYaml .Values.Deployment.spec.template.spec.volumes | nindent 8 }}
-      securityContext:
-        {{- toYaml .Values.Deployment.spec.template.spec.securityContext | nindent 8 }}
       tolerations:
         {{- toYaml .Values.Deployment.spec.template.spec.tolerations | nindent 8 }}
   replicas: {{ .Values.Deployment.spec.replicas }}
