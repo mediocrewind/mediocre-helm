@@ -2,7 +2,8 @@
 # base configuration
 nameOverride: "mediocre-app-keycloak"
 fullnameOverride: "mediocre-app-keycloak"
-role: "application"
+namespace: platform
+role: "database"
 
 # ---------------------------------------------------------------------------------------------------------
 # serviceaccount
@@ -20,9 +21,10 @@ Role:
       verbs: ["list","get"]
 
 # ---------------------------------------------------------------------------------------------------------
-# deployment
-Deployment:
+# statefulset
+StatefulSet:
   spec:
+    podManagementPolicy: "OrderedReady"
     template:
       spec:
         containers:
@@ -30,6 +32,13 @@ Deployment:
             name: keycloak
             image: quay.io/keycloak/keycloak:26.0.0
             args: ["start-dev"]
+            resources:
+              requests:
+                memory: "500M"
+                cpu: 0.5
+              limits:
+                memory: "2G"
+                cpu: 1.8
             env:
               - name: KEYCLOAK_ADMIN
                 value: "admin"
@@ -47,12 +56,11 @@ Deployment:
         tolerations:
           - key: "platform/role"
             operator: "Equal"
-            value: "application"
-            effect: "NoExecute"
-    replicas: 1
+            value: "database"
+            effect: "NoExecute"        
     selector:
       matchLabels:
-        platform/role: application
+        platform/role: database
 
 # ---------------------------------------------------------------------------------------------------------
 # service

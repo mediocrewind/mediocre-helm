@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name:  {{ include "keycloak.fullname" . }}
+  namespace: {{ .Values.namespace }}
+  labels:
+    {{- include "keycloak.labels" . | nindent 4 }}
+spec:
+  serviceName: {{ include "keycloak.fullname" . }}
+  podManagementPolicy: {{ .Values.StatefulSet.spec.podManagementPolicy }}
+  template:
+    metadata:
+      name: {{ include "keycloak.fullname" . }}
+      labels:
+        {{- include "keycloak.labels" . | nindent 8 }}
+    spec:
+      ServiceAccountName: {{ include "keycloak.serviceAccountName" . }}
+      containers:
+        - name: {{ .Values.StatefulSet.spec.template.spec.containers.main.name }}
+          image: {{ .Values.StatefulSet.spec.template.spec.containers.main.image }}
+          args: {{ .Values.StatefulSet.spec.template.spec.containers.main.args }}
+          resources:
+            {{- toYaml .Values.StatefulSet.spec.template.spec.containers.main.resources | nindent 12 }}
+          env:
+            {{- toYaml .Values.StatefulSet.spec.template.spec.containers.main.env | nindent 12 }}
+          ports:
+            {{- toYaml .Values.StatefulSet.spec.template.spec.containers.main.ports | nindent 12 }}
+          readinessProbe:
+            {{- toYaml .Values.StatefulSet.spec.template.spec.containers.main.readinessProbe | nindent 12 }}
+      tolerations:
+        {{- toYaml .Values.StatefulSet.spec.template.spec.tolerations | nindent 8 }}
+  replicas: {{ .Values.StatefulSet.spec.replicas }}
+  selector:
+    {{- toYaml .Values.StatefulSet.spec.selector | nindent 4  }}
