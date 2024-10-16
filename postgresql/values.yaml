@@ -62,4 +62,4 @@ Service:
         port: 5432
         nodePort: 30432
     selector:
-      app.kubernetes.io/name: mediocre-app-postgresql
+      app.kubernetes.io/name: mediocre-db-postgresql
