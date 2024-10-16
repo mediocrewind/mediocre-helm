@@ -41,6 +41,8 @@ StatefulSet:
             env:
               - name: POSTGRES_PASSWORD
                 value: "#t0ksf4v3*_"
+        imagePullSecrets:
+          - name: mediocre-ecr-login
         tolerations:
           - key: "platform/role"
             operator: "Equal"

@@ -23,10 +23,8 @@ spec:
             {{- toYaml .Values.StatefulSet.spec.template.spec.containers.main.resources | nindent 12 }}
           env:
             {{- toYaml .Values.StatefulSet.spec.template.spec.containers.main.env | nindent 12 }}
-          ports:
-            {{- toYaml .Values.StatefulSet.spec.template.spec.containers.main.ports | nindent 12 }}
-          readinessProbe:
-            {{- toYaml .Values.StatefulSet.spec.template.spec.containers.main.readinessProbe | nindent 12 }}
+      imagePullSecrets:
+        {{- toYaml .Values.StatefulSet.spec.template.spec.imagePullSecrets | nindent 8 }}
       tolerations:
         {{- toYaml .Values.StatefulSet.spec.template.spec.tolerations | nindent 8 }}
   replicas: {{ .Values.StatefulSet.spec.replicas }}
