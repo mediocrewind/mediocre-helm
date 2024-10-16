@@ -46,7 +46,11 @@ StatefulSet:
                 name: db-data
         volumes:
           - name: db-data
-            emptyDir: {}
+            hostPath:
+              path: /opt/kube/postgresql
+              type: Directory
+        securityContext:
+          fsgroup: 1000
         imagePullSecrets:
           - name: mediocre-ecr-login
         tolerations:

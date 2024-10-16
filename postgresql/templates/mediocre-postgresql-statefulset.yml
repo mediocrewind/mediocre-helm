@@ -27,6 +27,8 @@ spec:
             {{- toYaml .Values.StatefulSet.spec.template.spec.containers.main.volumeMounts | nindent 12 }}
       volumes:
         {{- toYaml .Values.StatefulSet.spec.template.spec.volumes | nindent 8  }}
+      securityContext:
+        {{- toYaml .Values.StatefulSet.spec.template.spec.securityContext | nindent 8 }}
       imagePullSecrets:
         {{- toYaml .Values.StatefulSet.spec.template.spec.imagePullSecrets | nindent 8 }}
       tolerations:
