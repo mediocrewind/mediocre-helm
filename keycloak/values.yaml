@@ -46,6 +46,15 @@ StatefulSet:
                 value: "admin"
               - name: KC_PROXY
                 value: "edge"
+              - name: KC_DB
+                value: "postgres"
+              - name: KC_DB_URL
+                value: "jdbc:postgresql://192.168.122.133:30432/keycloak"
+              - name: KC_DB_USERNAME
+                value: "keycloak"
+              - name: KC_DB_PASSWORD
+                value: "#t0ksf4v3*_"
+
             ports:
               - name: http
                 containerPort: 8080
