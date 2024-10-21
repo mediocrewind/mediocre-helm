@@ -42,7 +42,7 @@ StatefulSet:
               - name: POSTGRES_PASSWORD
                 value: "#t0ksf4v3*_"
             volumeMounts:
-              - mountPath: /var/lib/postgresql
+              - mountPath: /var/lib/postgresql/data
                 name: db-data
         volumes:
           - name: db-data
