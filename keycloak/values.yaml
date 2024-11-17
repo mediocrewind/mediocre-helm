@@ -50,6 +50,8 @@ StatefulSet:
                 value: "postgres"
               - name: KC_DB_URL
                 value: "jdbc:postgresql://192.168.122.133:30432/keycloak"
+              - name: KC_DB_SCHEMA
+                value: "main"
               - name: KC_DB_USERNAME
                 value: "keycloak"
               - name: KC_DB_PASSWORD
