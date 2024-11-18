@@ -7,7 +7,7 @@ metadata:
     {{- include "postgresql.labels" . | nindent 4 }}
 spec:
   serviceName: {{ include "postgresql.fullname" . }}
-  podManagementPolicy: {{ .Values.StatefulSet.spec.podManagementPolicy }}
+  podManagementPolicy: {{ .Values.StatefulSet.podManagementPolicy }}
   template:
     metadata:
       name: {{ include "postgresql.fullname" . }}
@@ -16,23 +16,22 @@ spec:
     spec:
       ServiceAccountName: {{ include "postgresql.serviceAccountName" . }}
       containers:
-        - name: {{ .Values.StatefulSet.spec.template.spec.containers.main.name }}
-          image: {{ .Values.StatefulSet.spec.template.spec.containers.main.image }}
-          args: {{ .Values.StatefulSet.spec.template.spec.containers.main.args }}
+        - name: {{ .Values.StatefulSet.containerMain.name }}
+          image: {{ .Values.StatefulSet.containerMain.image }}
           resources:
-            {{- toYaml .Values.StatefulSet.spec.template.spec.containers.main.resources | nindent 12 }}
+            {{- toYaml .Values.StatefulSet.containerMain.resources | nindent 12 }}
           env:
-            {{- toYaml .Values.StatefulSet.spec.template.spec.containers.main.env | nindent 12 }}
+            {{- toYaml .Values.StatefulSet.containerMain.env | nindent 12 }}
           volumeMounts:
-            {{- toYaml .Values.StatefulSet.spec.template.spec.containers.main.volumeMounts | nindent 12 }}
+            {{- toYaml .Values.StatefulSet.containerMain.volumeMounts | nindent 12 }}
       volumes:
-        {{- toYaml .Values.StatefulSet.spec.template.spec.volumes | nindent 8  }}
+        {{- toYaml .Values.StatefulSet.containerMain.volumes | nindent 8  }}
       securityContext:
-        {{- toYaml .Values.StatefulSet.spec.template.spec.securityContext | nindent 8 }}
+        {{- toYaml .Values.StatefulSet.securityContext | nindent 8 }}
       imagePullSecrets:
-        {{- toYaml .Values.StatefulSet.spec.template.spec.imagePullSecrets | nindent 8 }}
+        {{- toYaml .Values.StatefulSet.imagePullSecrets | nindent 8 }}
       tolerations:
-        {{- toYaml .Values.StatefulSet.spec.template.spec.tolerations | nindent 8 }}
-  replicas: {{ .Values.StatefulSet.spec.replicas }}
+        {{- toYaml .Values.StatefulSet.tolerations | nindent 8 }}
+  replicas: {{ .Values.StatefulSet.replicas }}
   selector:
-    {{- toYaml .Values.StatefulSet.spec.selector | nindent 4  }}
+    {{- toYaml .Values.StatefulSet.selector | nindent 4  }}

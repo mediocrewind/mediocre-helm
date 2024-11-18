@@ -11,4 +11,4 @@ spec:
     {{- toYaml .Values.Service.spec.ports | nindent 4 }}
   clusterIP: {{ .Values.Service.spec.clusterIP  }}
   selector:
-    {{- toYaml .Values.Service.spec.selector | nindent 4 }}
+    {{- toYaml .Values.Service.selector | nindent 4 }}
