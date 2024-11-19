@@ -1,0 +1,71 @@
+# ---------------------------------------------------------------------------------------------------------
+# base configuration
+nameOverride: "mediocre-db-postgresql"
+fullnameOverride: "mediocre-db-postgresql"
+namespace: platform
+role: "database"
+
+# ---------------------------------------------------------------------------------------------------------
+# serviceaccount
+serviceAccount:
+  name: ""
+  create: true
+  automount: true
+
+# ---------------------------------------------------------------------------------------------------------
+# role
+Role:
+  rules:
+    - apiGroups: [""]
+      resources: ["configmaps","secrets"]
+      verbs: ["list","get"]
+
+# ---------------------------------------------------------------------------------------------------------
+# statefulset
+StatefulSet:
+  podManagementPolicy: "OrderedReady"
+  containerMain:
+    name: postgresql
+    image: 487835535578.dkr.ecr.ap-southeast-1.amazonaws.com/system-devops-ecr-postgresql:latest
+    resources:
+      requests:
+        memory: "500M"
+        cpu: 0.5
+      limits:
+        memory: "2G"
+        cpu: 1.8
+    env:
+      - name: POSTGRES_PASSWORD
+        value: "#t0ksf4v3*_"
+    volumeMounts:
+      - mountPath: /var/lib/postgresql/data
+        name: db-data
+  volumes:
+    - name: db-data
+      hostPath:
+        path: /opt/kube/postgresql
+        type: Directory
+  securityContext:
+    fsGroup: 1000
+  imagePullSecrets:
+    - name: mediocre-ecr-login
+  tolerations:
+    - key: "platform/role"
+      operator: "Equal"
+      value: "database"
+      effect: "NoExecute"      
+  replicas: 1
+  selector:
+    matchLabels:
+      platform/role: database
+
+# ---------------------------------------------------------------------------------------------------------
+# service
+Service:
+  type: NodePort
+  ports:
+    - targetPort: 5432
+      port: 5432
+      nodePort: 30432
+  selector:
+    app.kubernetes.io/name: mediocre-db-postgresql

@@ -14,7 +14,7 @@ spec:
       labels:
         {{- include "postgresql.labels" . | nindent 8 }}
     spec:
-      ServiceAccountName: {{ include "postgresql.serviceAccountName" . }}
+      serviceAccountName: {{ include "postgresql.serviceAccountName" . }}
       containers:
         - name: {{ .Values.StatefulSet.containerMain.name }}
           image: {{ .Values.StatefulSet.containerMain.image }}
