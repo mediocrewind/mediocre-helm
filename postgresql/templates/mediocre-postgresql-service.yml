@@ -6,9 +6,9 @@ metadata:
   labels:
     {{- include "postgresql.labels" . | nindent 4 }}
 spec:
-  type: {{ .Values.Service.spec.type }}
+  type: {{ .Values.Service.type }}
   ports:
-    {{- toYaml .Values.Service.spec.ports | nindent 4 }}
-  clusterIP: {{ .Values.Service.spec.clusterIP  }}
+    {{- toYaml .Values.Service.ports | nindent 4 }}
+  clusterIP: {{ .Values.Service.clusterIP  }}
   selector:
     {{- toYaml .Values.Service.selector | nindent 4 }}
