@@ -7,28 +7,27 @@ metadata:
     {{- include "keycloak.labels" . | nindent 4 }}
 spec:
   serviceName: {{ include "keycloak.fullname" . }}
-  podManagementPolicy: {{ .Values.StatefulSet.spec.podManagementPolicy }}
+  podManagementPolicy: {{ .Values.StatefulSet.podManagementPolicy }}
   template:
     metadata:
       name: {{ include "keycloak.fullname" . }}
       labels:
         {{- include "keycloak.labels" . | nindent 8 }}
     spec:
-      ServiceAccountName: {{ include "keycloak.serviceAccountName" . }}
+      serviceAccountName: {{ include "keycloak.serviceAccountName" . }}
       containers:
-        - name: {{ .Values.StatefulSet.spec.template.spec.containers.main.name }}
-          image: {{ .Values.StatefulSet.spec.template.spec.containers.main.image }}
-          args: {{ .Values.StatefulSet.spec.template.spec.containers.main.args }}
+        - name: {{ .Values.StatefulSet.containerMain.name }}
+          image: {{ .Values.StatefulSet.containerMain.image }}
+          args: {{ .Values.StatefulSet.containerMain.args }}
           resources:
-            {{- toYaml .Values.StatefulSet.spec.template.spec.containers.main.resources | nindent 12 }}
+            {{- toYaml .Values.StatefulSet.containerMain.resources | nindent 12 }}
           env:
-            {{- toYaml .Values.StatefulSet.spec.template.spec.containers.main.env | nindent 12 }}
+            {{- toYaml .Values.StatefulSet.containerMain.env | nindent 12 }}
           ports:
-            {{- toYaml .Values.StatefulSet.spec.template.spec.containers.main.ports | nindent 12 }}
+            {{- toYaml .Values.StatefulSet.containerMain.ports | nindent 12 }}
           readinessProbe:
-            {{- toYaml .Values.StatefulSet.spec.template.spec.containers.main.readinessProbe | nindent 12 }}
+            {{- toYaml .Values.StatefulSet.containerMain.readinessProbe | nindent 12 }}
       tolerations:
-        {{- toYaml .Values.StatefulSet.spec.template.spec.tolerations | nindent 8 }}
-  replicas: {{ .Values.StatefulSet.spec.replicas }}
+        {{- toYaml .Values.StatefulSet.tolerations | nindent 8 }}
   selector:
-    {{- toYaml .Values.StatefulSet.spec.selector | nindent 4  }}
+    {{- toYaml .Values.StatefulSet.selector | nindent 4  }}
