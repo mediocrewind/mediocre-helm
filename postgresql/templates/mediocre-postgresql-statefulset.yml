@@ -25,7 +25,7 @@ spec:
           volumeMounts:
             {{- toYaml .Values.StatefulSet.containerMain.volumeMounts | nindent 12 }}
       volumes:
-        {{- toYaml .Values.StatefulSet.containerMain.volumes | nindent 8  }}
+        {{- toYaml .Values.StatefulSet.volumes | nindent 8  }}
       securityContext:
         {{- toYaml .Values.StatefulSet.securityContext | nindent 8 }}
       imagePullSecrets:
