@@ -3,7 +3,7 @@
 nameOverride: "mediocre-db-mariadb"
 fullnameOverride: "mediocre-db-mariadb"
 role: "database"
-
+namespace: "platform"
 
 # ---------------------------------------------------------------------------------------------------------
 # serviceaccount
@@ -29,65 +29,59 @@ Role:
 # ---------------------------------------------------------------------------------------------------------
 # statefulset
 StatefulSet:
-  spec:
-    podManagementPolicy: "OrderedReady"
-    template:
-      spec:
-        containers:
-          main: 
-            name: "db-mariadb"
-            repository: "487835535578.dkr.ecr.ap-southeast-1.amazonaws.com/system-devops-ecr-mariadb"
-            tag: "latest"
-            pullPolicy: "Always"
-            resources:
-              requests:
-                memory: "500M"
-                cpu: 0.5
-              limits:
-                memory: "2G"
-                cpu: 1.8
-            volumeMounts:
-              - mountPath: /var/lib/mysql
-                name: db-data
-        volumes:
-          - name: db-data
-            hostPath:
-              path: /opt/kube/mariadb
-              type: Directory
-        securityContext:
-          fsgroup: 1000
-        imagePullSecrets:
-          - name: mediocre-ecr-login
-        tolerations:
-          - key: "platform/role"
-            operator: "Equal"
-            value: "database"
-            effect: "NoExecute"
-    replicas: 1
-    selector:
-      matchLabels:
-        platform/role: database
+  podManagementPolicy: "OrderedReady"
+  containers:
+    mariadb:
+      repository: "487835535578.dkr.ecr.ap-southeast-1.amazonaws.com/system-devops-ecr-mariadb"
+      tag: "latest"
+      imagePullPolicy: "Always"
+      resources:
+        requests:
+          memory: "500M"
+          cpu: 0.5
+        limits:
+          memory: "500"
+          cpu: 1.8
+      volumeMounts:
+        - mountPath: /var/lib/mysql
+          name: db-data    
+  volumes:
+    - name: db-data
+      hostPath:
+        path: /opt/kube/mariadb
+        type: Directory
+  securityContext:
+    fsGroup: 1000
+  imagePullSecrets:
+    - name: mediocre-ecr-login
+  tolerations:
+    - key: "platform/role"
+      operator: "Equal"
+      value: "database"
+      effect: "NoExecute"
+  replicas: 1
+  selector:
+    matchLabels:
+      platform/role: database
   
 # ---------------------------------------------------------------------------------------------------------
 # service (cluster-ip)
-Service:
-  spec:
-    type: ClusterIP
-    ports:
-      - targetPort: 3306
-        port: 3306
-    clusterIP: None
-    selector:
-      platform/role: database
+ServiceCluster:
+  type: ClusterIP
+  ports:
+    - targetPort: 3306
+      port: 3306
+  clusterIP: None
+  selector:
+    platform/role: database
 
 # ---------------------------------------------------------------------------------------------------------
 # service (node)
 ServiceNode:
-  spec:
-    type: NodePort
-    ports:
-      - targetPort: 3306
-        port: 3306
-        nodePort: 30306
-    selector:
-      platform/role: database
+  type: NodePort
+  ports:
+    - targetPort: 3306
+      port: 3306
+      nodePort: 30306
+  selector:
+    platform/role: database

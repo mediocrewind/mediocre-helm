@@ -1,13 +1,30 @@
+---
 apiVersion: v1
 kind: Service
 metadata:
-  name:  {{ include "mariadb.fullname" . }}
+  name:  {{ include "mariadb.fullname" . }}-cluster
   labels:
     {{- include "mariadb.labels" . | nindent 4 }}
+  namespace:  {{ .Values.namespace }}    
 spec:
-  type: {{ .Values.Service.spec.type }}
+  type: {{ .Values.ServiceCluster.type }}
   ports:
-    {{- toYaml .Values.Service.spec.ports | nindent 4 }}
-  clusterIP: {{ .Values.Service.spec.clusterIP  }}
+    {{- toYaml .Values.ServiceCluster.ports | nindent 4 }}
+  clusterIP: {{ .Values.ServiceCluster.clusterIP  }}
   selector:
-    {{- toYaml .Values.Service.spec.selector | nindent 4 }}
+    {{- toYaml .Values.ServiceCluster.selector | nindent 4 }}
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name:  {{ include "mariadb.fullname" . }}-node
+  labels:
+    {{- include "mariadb.labels" . | nindent 4 }}
+  namespace:  {{ .Values.namespace }}    
+spec:
+  type: {{ .Values.ServiceNode.type }}
+  ports:
+    {{- toYaml .Values.ServiceNode.ports | nindent 4 }}
+  selector:
+    {{- toYaml .Values.ServiceNode.selector | nindent 4 }}

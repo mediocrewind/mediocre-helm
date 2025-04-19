@@ -1,9 +1,11 @@
+---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
   name: {{ include "mariadb.fullname" . }}
   labels:
     {{- include "mariadb.labels" . | nindent 4 }}
+  namespace: {{ .Values.namespace }}   
 subjects:
   - kind: ServiceAccount
     name: {{ include "mariadb.serviceAccountName" . }}
