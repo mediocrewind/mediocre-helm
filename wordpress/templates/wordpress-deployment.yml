@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "wordpress.fullname" . }}
+  labels:
+    {{- include "wordpress.labels" . | nindent 4 }}
+spec:
+  strategy:
+    {{- toYaml .Values.Deployment.strategy | nindent 4 }}
+  template:
+    metadata:
+      name: {{ include "wordpress.fullname" . }}
+      labels:
+        {{- include "wordpress.labels" . | nindent 8 }}
+    spec:
+      serviceAccountName: {{ include "wordpress.serviceAccountName" . }}
+      initContainers:
+      containers:
+        - name: wordpress
+          image: {{ .Values.Deployment.containers.wordpress.image }}:{{ .Values.Deployment.containers.wordpress.tag }}
+          imagePullPolicy: {{ .Values.Deployment.containers.wordpress.imagePullPolicy }}
+          resources:
+            {{- toYaml .Values.Deployment.containers.wordpress.resources | nindent 12 }}
+          envFrom:
+            - configMapRef:
+                name: {{ include "wordpress.fullname" . }}
+          volumeMounts:
+            {{- toYaml .Values.Deployment.containers.wordpress.volumeMounts | nindent 12 }}
+      volumes:
+        {{- toYaml .Values.Deployment.volumes | nindent 8  }}
+      securityContext:
+        {{- toYaml .Values.Deployment.podSecurityContext | nindent 8 }}
+      imagePullSecrets:
+        {{- toYaml .Values.Deployment.imagePullSecrets | nindent 8  }}
+      tolerations:
+        {{- toYaml .Values.Deployment.tolerations | nindent 8 }}
+  {{- if not .Values.HorizontalPodAutoscaler.enabled  }}
+  replicas: {{ .Values.Deployment.replicas }}
+  {{- end }}
+  selector:
+    {{- toYaml .Values.Deployment.selector | nindent 4 }}

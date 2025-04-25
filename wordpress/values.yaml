@@ -32,47 +32,47 @@ ConfigMap:
 # ---------------------------------------------------------------------------------------------------------
 # deployment
 Deployment:
-  spec:
-    strategy:
-      type: RollingUpdate
-      rollingUpdate:
-        maxSurge: 2
-        maxUnavailable: 1
-    template:
-      spec:
-        initContainers:
-        containers:
-          main:
-            name: app-wordpress
-            image: 487835535578.dkr.ecr.ap-southeast-1.amazonaws.com/mediocrewind-core-ecr-app-wordpress:latest
-            resources:
-              requests:
-                memory: "500M"
-                cpu: 0.5
-              limits:
-                memory: "1G"
-                cpu: 1.8
-            volumeMounts:
-              - mountPath: /var/www/html
-                name: wp-data
-        volumes:
-          - name: wp-data
-            hostPath:
-              path: /opt/kube/wordpress
-              type: Directory
-        securityContext:
-          fsGroup: 1000
-        imagePullSecrets:
-          - name: mediocre-ecr-login
-        tolerations:
-          - key: "platform/role"
-            operator: "Equal"
-            value: "application"
-            effect: "NoExecute"
-    replicas: 1
-    selector:
-      matchLabels:
-        platform/role: application
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 2
+      maxUnavailable: 1
+  containers:
+    wordpress:
+      image: "487835535578.dkr.ecr.ap-southeast-1.amazonaws.com/mediocrewind-core-ecr-app-wordpress"
+      tag: "latest"
+      imagePullPolicy: "Always"
+      resources:
+        requests:
+          memory: "500M"
+          cpu: 0.5
+        limits:
+          memory: "1G"
+          cpu: 1.8
+      securityContext:
+        runAsUser: 1000
+        runAsNonRoot: true
+      volumeMounts:
+        - mountPath: /var/www/html
+          name: wp-data
+  volumes:
+    - name: wp-data
+      hostPath:
+        path: /opt/kube/wordpress
+        type: Directory
+  podSecurityContext:
+    fsGroup: 1000
+  imagePullSecrets:
+    - name: mediocre-ecr-login
+  tolerations:
+    - key: "platform/role"
+      operator: "Equal"
+      value: "application"
+      effect: "NoExecute"
+  replicas: 1
+  selector:
+    matchLabels:
+      platform/role: application
 
 # ---------------------------------------------------------------------------------------------------------
 # service
@@ -89,7 +89,7 @@ Service:
 # ---------------------------------------------------------------------------------------------------------
 # horizontalpodautoscaler
 HorizontalPodAutoscaler:
-  enabled: true
+  enabled: false
   spec:
     minReplicas: 1
     maxReplicas: 4
