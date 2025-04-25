@@ -33,7 +33,7 @@ spec:
       volumes:
         {{- toYaml .Values.StatefulSet.volumes | nindent 8  }}
       securityContext:
-        {{- toYaml .Values.StatefulSet.securityContext | nindent 8 }}
+        {{- toYaml .Values.StatefulSet.podSecurityContext | nindent 8 }}
       imagePullSecrets:
         {{- toYaml .Values.StatefulSet.imagePullSecrets | nindent 8 }}
       tolerations:

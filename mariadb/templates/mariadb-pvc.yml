@@ -1,0 +1,14 @@
+---
+{{- if .Values.PersistentVolumeClaim.create -}}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "mariadb.fullname" . }}
+spec: 
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: {{ include "mariadb.fullname" . }}
+  resources: 
+    requests:
+      storage: 4Gi
+{{- end }}

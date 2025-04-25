@@ -42,6 +42,8 @@ StatefulSet:
         limits:
           memory: "500"
           cpu: 1.8
+      securityContext:
+        runAsUser: 1000
       volumeMounts:
         - mountPath: /var/lib/mysql
           name: db-data    
@@ -50,7 +52,7 @@ StatefulSet:
       hostPath:
         path: /opt/kube/mariadb
         type: Directory
-  securityContext:
+  podSecurityContext:
     fsGroup: 1000
   imagePullSecrets:
     - name: mediocre-ecr-login
@@ -66,7 +68,7 @@ StatefulSet:
   
 # ---------------------------------------------------------------------------------------------------------
 # service (cluster-ip)
-ServiceCluster:
+Service:
   type: ClusterIP
   ports:
     - targetPort: 3306
@@ -85,3 +87,14 @@ ServiceNode:
       nodePort: 30306
   selector:
     platform/role: database
+
+# ---------------------------------------------------------------------------------------------------------
+# storageclass
+StorageClass:
+  create: false
+
+# ---------------------------------------------------------------------------------------------------------
+# persistentvolumeclaim
+PersistentVolumeClaim:
+  create: false
+  storage: 4Gi
