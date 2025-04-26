@@ -30,8 +30,13 @@ spec:
                 name: {{ include "mariadb.fullname" . }}
           volumeMounts:
             {{- toYaml .Values.StatefulSet.containers.mariadb.volumeMounts | nindent 12 }}
+            - name: {{ include "mariadb.fullname" . }}-script
+              mountPath: /docker-entrypoint-initdb.d
       volumes:
         {{- toYaml .Values.StatefulSet.volumes | nindent 8  }}
+        - name: {{ include "mariadb.fullname" . }}-script
+          configMap:
+            name: {{ include "mariadb.fullname" . }}-script
       securityContext:
         {{- toYaml .Values.StatefulSet.podSecurityContext | nindent 8 }}
       imagePullSecrets:

@@ -13,10 +13,19 @@ serviceAccount:
   automount: true
 
 # ---------------------------------------------------------------------------------------------------------
-# configmap
-configMap:
+# configmap - root password
+configMapRoot:
   data:
     MARIADB_ROOT_PASSWORD: "Hell0D4tabase!"
+
+# ---------------------------------------------------------------------------------------------------------
+# configmap - database
+configMapDatabase:
+  data:
+    init.sql: |-
+      CREATE DATABASE IF NOT EXISTS `mediocrewind`;
+      CREATE USER IF NOT EXISTS `mediocrewind`@'%' IDENTIFIED BY 'H3ll0Th3r3*_';
+      GRANT ALL PRIVILEGES ON `mediocrewind`.* TO `mediocrewind`@'%';
 
 # ---------------------------------------------------------------------------------------------------------
 # role
