@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name:  {{ include "keycloak.fullname" . }}
+  namespace: {{ .Values.namespace }}
+  labels:
+    {{- include "keycloak.labels" . | nindent 4 }}
+spec:
+  serviceName: {{ include "keycloak.fullname" . }}
+  podManagementPolicy: {{ .Values.StatefulSet.podManagementPolicy }}
+  template:
+    metadata:
+      name: {{ include "keycloak.fullname" . }}
+      labels:
+        {{- include "keycloak.labels" . | nindent 8 }}
+    spec:
+      serviceAccountName: {{ include "keycloak.serviceAccountName" . }}
+      containers:
+        - name: "keycloak"
+          image: {{ .Values.StatefulSet.keycloak.image }}
+          args: {{ .Values.StatefulSet.keycloak.args }}
+          resources:
+            {{- toYaml .Values.StatefulSet.keycloak.resources | nindent 12 }}
+          env:
+            {{- toYaml .Values.StatefulSet.keycloak.env | nindent 12 }}
+          ports:
+            {{- toYaml .Values.StatefulSet.keycloak.ports | nindent 12 }}
+          readinessProbe:
+            {{- toYaml .Values.StatefulSet.keycloak.readinessProbe | nindent 12 }}
+      tolerations:
+        {{- toYaml .Values.StatefulSet.tolerations | nindent 8 }}
+  selector:
+    {{- toYaml .Values.StatefulSet.selector | nindent 4  }}

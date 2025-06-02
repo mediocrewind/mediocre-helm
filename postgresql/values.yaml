@@ -1,0 +1,114 @@
+# ---------------------------------------------------------------------------------------------------------
+# base configuration
+nameOverride: "mediocre-db-postgresql"
+fullnameOverride: "mediocre-db-postgresql"
+namespace: "monitoring"
+role: "database"
+
+# ---------------------------------------------------------------------------------------------------------
+# serviceaccount
+serviceAccount:
+  name: ""
+  create: true
+  automount: true
+
+# ---------------------------------------------------------------------------------------------------------
+# configmap - database
+configMapDatabase:
+  data:
+    init.sql: |-
+      -- Create the database if it does not exist
+      DO
+      $$
+      BEGIN
+          IF NOT EXISTS (SELECT FROM pg_database WHERE datname = 'grafana') THEN
+              CREATE DATABASE grafana;
+          END IF;
+      END
+      $$;
+      
+      -- Create the user if it does not exist
+      DO
+      $$
+      BEGIN
+          IF NOT EXISTS (SELECT FROM pg_catalog.pg_user WHERE usename = 'grafana') THEN
+              CREATE USER grafana WITH PASSWORD 'H3ll0Th3r3*_';
+          END IF;
+      END
+      $$;
+      
+      -- Grant privileges
+      GRANT ALL PRIVILEGES ON DATABASE grafana TO grafana;
+
+# ---------------------------------------------------------------------------------------------------------
+# role
+Role:
+  rules:
+    - apiGroups: [""]
+      resources: ["configmaps","secrets"]
+      verbs: ["list","get"]
+
+# ---------------------------------------------------------------------------------------------------------
+# statefulset
+StatefulSet:
+  podManagementPolicy: "OrderedReady"
+  nodeSelector:
+    platform/role: database
+  containers:
+    postgresql:
+      image: "487835535578.dkr.ecr.ap-southeast-1.amazonaws.com/system-devops-ecr-postgresql"
+      tag: "latest"
+      imagePullPolicy: "Always"
+      resources:
+        requests:
+          memory: "500M"
+          cpu: 0.25
+        limits:
+          memory: "2G"
+          cpu: 1.0
+      env:
+        - name: POSTGRES_PASSWORD
+          value: "T3st2025214"     
+      volumeMounts:
+        - mountPath: /var/lib/postgresql/data
+          name: db-data
+  volumes:
+    - name: db-data
+      hostPath:
+        path: /opt/kube/postgresql
+        type: Directory
+  securityContext:
+    fsGroup: 1000
+  imagePullSecrets:
+    - name: mediocre-ecr-login
+  tolerations:
+    - key: platform/role
+      operator: Equal
+      value: "database"
+      effect: NoExecute
+  replicas: 1
+  selector:
+    matchLabels:
+      platform/role: "database"
+
+# ---------------------------------------------------------------------------------------------------------
+# service - cluster
+Service:
+  type: ClusterIP
+  ports:
+    - targetPort: 5432
+      port: 5432
+  clusterIP: None
+  selector:
+    app.kubernetes.io/name: "mediocre-db-postgresql"
+
+# ---------------------------------------------------------------------------------------------------------
+# service - nodeport
+ServiceNode:
+  type: NodePort
+  ports:
+    - targetPort: 5432
+      port: 5432
+      nodePort: 30432
+  selector:
+    app.kubernetes.io/name: "mediocre-db-postgresql"

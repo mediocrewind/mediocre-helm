@@ -1,0 +1,81 @@
+# ---------------------------------------------------------------------------------------------------------
+# base configuration
+nameOverride: "mediocre-app-keycloak"
+fullnameOverride: "mediocre-app-keycloak"
+namespace: "monitoring"
+role: "application"
+
+# ---------------------------------------------------------------------------------------------------------
+# serviceaccount
+serviceAccount:
+  name: ""
+  create: true
+  automount: true
+
+# ---------------------------------------------------------------------------------------------------------
+# role
+Role:
+  rules:
+    - apiGroups: [""]
+      resources: ["configmaps","secrets"]
+      verbs: ["list","get"]
+
+# ---------------------------------------------------------------------------------------------------------
+# statefulset
+StatefulSet:
+  podManagementPolicy: "OrderedReady"
+  keycloak:
+    image: "quay.io/keycloak/keycloak:25.0.2"
+    args:  ["start-dev"]
+    resources:
+      requests:
+        memory: "500M"
+        cpu: 0.25
+      limits:
+        memory: "2G"
+        cpu: 1.0
+    env:
+      - name: KEYCLOAK_ADMIN
+        value: "admin"
+      - name: KEYCLOAK_ADMIN_PASSWORD
+        value: "admin"
+      - name: KC_PROXY
+        value: "edge"
+      - name: KC_DB
+        value: "postgres"
+      - name: KC_DB_URL
+        value: "jdbc:postgresql://192.168.122.133:30432/postgres"
+      - name: KC_DB_SCHEMA
+        value: "mediocre"
+      - name: KC_DB_USERNAME
+        value: "postgres"
+      - name: KC_DB_PASSWORD
+        value: "T3st2025214"
+    ports:
+      - name: http
+        containerPort: 8080
+    readinessProbe:
+      httpGet:
+        path: /realms/master
+        port: 8080
+  imagePullSecrets:
+    - name: "mediocre-ecr-login"     
+  tolerations:
+    - key: "platform/role"
+      operator: "Equal"
+      value: "application"
+      effect: "NoExecute"        
+  selector:
+    matchLabels:
+      platform/role: "application"
+
+# ---------------------------------------------------------------------------------------------------------
+# service
+Service:
+  type: NodePort
+  ports:
+    - targetPort: 8080
+      port: 8080
+      nodePort: 30180
+  selector:
+    app.kubernetes.io/name: "mediocre-app-keycloak"

@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name:  {{ include "postgresql.fullname" . }}
+  namespace: {{ .Values.namespace }}
+  labels:
+    {{- include "postgresql.labels" . | nindent 4 }}
+spec:
+  serviceName: {{ include "postgresql.fullname" . }}
+  podManagementPolicy: {{ .Values.StatefulSet.podManagementPolicy }}
+  template:
+    metadata:
+      name: {{ include "postgresql.fullname" . }}
+      labels:
+        {{- include "postgresql.labels" . | nindent 8 }}
+    spec:
+      serviceAccountName: {{ include "postgresql.serviceAccountName" . }}
+      nodeSelector:
+        {{- toYaml .Values.StatefulSet.nodeSelector | nindent 8  }}
+      containers:
+        - name: "postgresql"
+          image: {{ .Values.StatefulSet.containers.postgresql.image }}:{{ .Values.StatefulSet.containers.postgresql.tag }}
+          imagePullPolicy: {{ .Values.StatefulSet.containers.postgresql.imagePullPolicy }}
+          resources:
+            {{- toYaml .Values.StatefulSet.containers.postgresql.resources | nindent 12 }}
+          env:
+            {{- toYaml .Values.StatefulSet.containers.postgresql.env | nindent 12 }}
+          volumeMounts:
+            {{- toYaml .Values.StatefulSet.containers.postgresql.volumeMounts | nindent 12 }}
+      volumes:
+        {{- toYaml .Values.StatefulSet.volumes | nindent 8  }}     
+      securityContext:
+        {{- toYaml .Values.StatefulSet.securityContext | nindent 8 }}
+      imagePullSecrets:
+        {{- toYaml .Values.StatefulSet.imagePullSecrets | nindent 8 }}
+      tolerations:
+        {{- toYaml .Values.StatefulSet.tolerations | nindent 8 }}
+  replicas: {{ .Values.StatefulSet.replicas }}
+  selector:
+    {{- toYaml .Values.StatefulSet.selector | nindent 4  }}
