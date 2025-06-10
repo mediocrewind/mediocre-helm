@@ -10,5 +10,5 @@ spec:
   storageClassName: {{ include "mariadb.fullname" . }}
   resources: 
     requests:
-      storage: 4Gi
+      storage: {{ .Values.PersistentVolumeClaim.storage }}
 {{- end }}
