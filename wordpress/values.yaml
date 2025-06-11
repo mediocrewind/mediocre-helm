@@ -101,6 +101,11 @@ ServiceNode:
     platform/role: application
 
 # ---------------------------------------------------------------------------------------------------------
+# ingressclass
+CloudIngress:
+  create: false
+
+# ---------------------------------------------------------------------------------------------------------
 # horizontalpodautoscaler
 HorizontalPodAutoscaler:
   enabled: false
