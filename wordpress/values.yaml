@@ -3,6 +3,11 @@
 nameOverride: "mediocre-app-wp"
 fullnameOverride: "mediocre-app-wp"
 role: "application"
+allowedNamespaces:
+  - developlent
+  - staging
+  - production
+
 
 # ---------------------------------------------------------------------------------------------------------
 # serviceaccount
@@ -25,7 +30,7 @@ Role:
 ConfigMap:
   data:
     WORDPRESS_DB_HOST: mediocre-db-mariadb-0.mediocre-db-mariadb.platform.svc.cluster.local
-    WORDPRESS_DB_USER: mediocre
+    WORDPRESS_DB_USER: mediocrewind
     WORDPRESS_DB_PASSWORD: H3ll0Th3r3*_
     WORDPRESS_DB_NAME: mediocrewind
 
@@ -75,16 +80,25 @@ Deployment:
       platform/role: application
 
 # ---------------------------------------------------------------------------------------------------------
-# service
+# service (cluster-ip)
 Service:
-  spec:
-    type: NodePort
-    ports:
-      - targetPort: 80
-        port: 80
-        nodePort: 30080
-    selector:
-      platform/role: application
+  type: ClusterIP
+  ports:
+    - targetPort: 80
+      port: 80
+  selector:
+    platform/role: application
+
+# ---------------------------------------------------------------------------------------------------------
+# service (node)
+ServiceNode:
+  type: NodePort
+  ports:
+    - targetPort: 80
+      port: 80
+      nodePort: 30080
+  selector:
+    platform/role: application
 
 # ---------------------------------------------------------------------------------------------------------
 # horizontalpodautoscaler

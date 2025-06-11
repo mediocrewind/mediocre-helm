@@ -5,8 +5,25 @@ metadata:
   labels:
     {{- include "wordpress.labels" . | nindent 4 }}
 spec:
-  type: {{ .Values.Service.spec.type }}
+  type: {{ .Values.Service.type }}
   ports:
-    {{- toYaml .Values.Service.spec.ports | nindent 4 }}
+    {{- toYaml .Values.Service.ports | nindent 4 }}
   selector:
-    {{- toYaml .Values.Service.spec.selector | nindent 4 }}
+    {{- toYaml .Values.Service.selector | nindent 4 }}
+
+---
+
+{{- if eq .Release.Namespace "platform" }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "wordpress.fullname" . }}-node
+  labels:
+    {{- include "wordpress.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.ServiceNode.type }}
+  ports:
+    {{- toYaml .Values.ServiceNode.ports | nindent 4 }}
+  selector:
+    {{- toYaml .Values.ServiceNode.selector | nindent 4 }}
+{{- end }}

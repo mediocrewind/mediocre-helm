@@ -1,0 +1,14 @@
+---
+{{- if .Values.PersistentVolumeClaim.create -}}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "wordpress.fullname" . }}
+spec: 
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: {{ include "wordpress.fullname" . }}
+  resources: 
+    requests:
+      storage: {{ .Values.PersistentVolumeClaim.storage }}
+{{- end }}
