@@ -101,7 +101,7 @@ ServiceNode:
     platform/role: application
 
 # ---------------------------------------------------------------------------------------------------------
-# ingressclass
+# ingress
 CloudIngress:
   create: false
 

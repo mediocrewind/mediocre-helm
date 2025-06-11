@@ -14,8 +14,8 @@ metadata:
 spec:
   ingressClassName: {{ include "wordpress.fullname" . }}
   defaultBackend:
-  service:
-    name: {{ include "wordpress.fullname" . }}
-    port:
-      number: 80
+    service:
+      name: {{ include "wordpress.fullname" . }}
+      port:
+        number: 80
 {{- end }}
