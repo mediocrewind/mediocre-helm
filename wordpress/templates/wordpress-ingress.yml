@@ -3,6 +3,9 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: {{ include "wordpress.fullname" . }}
+  labels:
+    {{- include "wordpress.labels" . | nindent 4 }}
+  namespace: {{ .Values.namespace }}  
   annotations:
     alb.ingress.kubernetes.io/load-balancer-name: {{ include "wordpress.fullname" . }}
     alb.ingress.kubernetes.io/scheme: internet-facing
@@ -12,7 +15,7 @@ metadata:
     alb.ingress.kubernetes.io/healthcheck-path: /
     
 spec:
-  ingressClassName: {{ include "wordpress.fullname" . }}
+  ingressClassName: alb
   rules:
     - http:
         paths:

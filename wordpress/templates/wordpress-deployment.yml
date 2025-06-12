@@ -4,6 +4,7 @@ metadata:
   name: {{ include "wordpress.fullname" . }}
   labels:
     {{- include "wordpress.labels" . | nindent 4 }}
+  namespace: {{ .Values.namespace }}
 spec:
   strategy:
     {{- toYaml .Values.Deployment.strategy | nindent 4 }}
