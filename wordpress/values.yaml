@@ -103,6 +103,17 @@ ServiceNode:
     platform/role: application
 
 # ---------------------------------------------------------------------------------------------------------
+# service (alb)
+ServiceALB:
+  create: false
+  type: NodePort
+  ports:
+    - targetPort: 80
+      port: 80
+  selector:
+    platform/role: application
+
+# ---------------------------------------------------------------------------------------------------------
 # ingress
 CloudIngress:
   create: false

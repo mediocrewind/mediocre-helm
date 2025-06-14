@@ -1,3 +1,5 @@
+---
+{{- if eq .Release.Namespace "platform" }}
 apiVersion: v1
 kind: Service
 metadata:
@@ -11,9 +13,9 @@ spec:
     {{- toYaml .Values.Service.ports | nindent 4 }}
   selector:
     {{- toYaml .Values.Service.selector | nindent 4 }}
+{{- end }}
 
 ---
-
 apiVersion: v1
 kind: Service
 metadata:
@@ -26,3 +28,19 @@ spec:
     {{- toYaml .Values.ServiceNode.ports | nindent 4 }}
   selector:
     {{- toYaml .Values.ServiceNode.selector | nindent 4 }}
+
+---
+{{- if .Values.ServiceALB.create -}}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "wordpress.fullname" . }}
+  labels:
+    {{- include "wordpress.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.ServiceALB.type }}
+  ports:
+    {{- toYaml .Values.ServiceALB.ports | nindent 4 }}
+  selector:
+    {{- toYaml .Values.ServiceALB.selector | nindent 4 }}
+{{- end }}
