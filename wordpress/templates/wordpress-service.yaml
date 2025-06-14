@@ -14,7 +14,6 @@ spec:
 
 ---
 
-{{- if eq .Release.Namespace "platform" }}
 apiVersion: v1
 kind: Service
 metadata:
@@ -27,4 +26,3 @@ spec:
     {{- toYaml .Values.ServiceNode.ports | nindent 4 }}
   selector:
     {{- toYaml .Values.ServiceNode.selector | nindent 4 }}
-{{- end }}

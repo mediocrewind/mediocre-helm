@@ -20,6 +20,8 @@ spec:
         - name: wordpress
           image: {{ .Values.Deployment.containers.wordpress.image }}:{{ .Values.Deployment.containers.wordpress.tag }}
           imagePullPolicy: {{ .Values.Deployment.containers.wordpress.imagePullPolicy }}
+          ports:
+            {{- toYaml .Values.Deployment.containers.wordpress.ports | nindent 12 }}
           resources:
             {{- toYaml .Values.Deployment.containers.wordpress.resources | nindent 12 }}
           envFrom:

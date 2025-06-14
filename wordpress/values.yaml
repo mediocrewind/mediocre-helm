@@ -47,6 +47,8 @@ Deployment:
       image: "487835535578.dkr.ecr.ap-southeast-1.amazonaws.com/mediocrewind-core-ecr-app-wordpress"
       tag: "latest"
       imagePullPolicy: "Always"
+      ports:
+        - containerPort: 80
       resources:
         requests:
           memory: "500M"
@@ -104,6 +106,17 @@ ServiceNode:
 # ingress
 CloudIngress:
   create: false
+
+# ---------------------------------------------------------------------------------------------------------
+# storageclass
+StorageClass:
+  create: false
+
+# ---------------------------------------------------------------------------------------------------------
+# persistentvolumeclaim
+PersistentVolumeClaim:
+  create: false
+  storage: 4G
 
 # ---------------------------------------------------------------------------------------------------------
 # horizontalpodautoscaler
