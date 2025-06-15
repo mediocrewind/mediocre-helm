@@ -1,5 +1,5 @@
----
 {{- if .Values.Service.create -}}
+---
 apiVersion: v1
 kind: Service
 metadata:
@@ -14,8 +14,8 @@ spec:
     {{- toYaml .Values.Service.selector | nindent 4 }}
 {{- end }}
 
----
 {{- if .Values.ServiceNode.create -}}
+---
 apiVersion: v1
 kind: Service
 metadata:
