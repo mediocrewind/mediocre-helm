@@ -84,6 +84,7 @@ Deployment:
 # ---------------------------------------------------------------------------------------------------------
 # service (cluster-ip)
 Service:
+  create: true
   type: ClusterIP
   ports:
     - targetPort: 80
@@ -94,6 +95,7 @@ Service:
 # ---------------------------------------------------------------------------------------------------------
 # service (node)
 ServiceNode:
+  create: true
   type: NodePort
   ports:
     - targetPort: 80
