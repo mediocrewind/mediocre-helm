@@ -84,7 +84,7 @@ Deployment:
 # ---------------------------------------------------------------------------------------------------------
 # service (cluster-ip)
 Service:
-  create: true
+  create: false
   type: ClusterIP
   ports:
     - targetPort: 80
@@ -101,17 +101,6 @@ ServiceNode:
     - targetPort: 80
       port: 80
       nodePort: 30080
-  selector:
-    platform/role: application
-
-# ---------------------------------------------------------------------------------------------------------
-# service (alb)
-ServiceALB:
-  create: false
-  type: NodePort
-  ports:
-    - targetPort: 80
-      port: 80
   selector:
     platform/role: application
 

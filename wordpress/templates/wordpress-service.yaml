@@ -20,7 +20,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "wordpress.fullname" . }}-node
+  name: {{ include "wordpress.fullname" . }}
   labels:
     {{- include "wordpress.labels" . | nindent 4 }}
 spec:
@@ -29,20 +29,4 @@ spec:
     {{- toYaml .Values.ServiceNode.ports | nindent 4 }}
   selector:
     {{- toYaml .Values.ServiceNode.selector | nindent 4 }}
-{{- end }}
-
----
-{{- if .Values.ServiceALB.create -}}
-apiVersion: v1
-kind: Service
-metadata:
-  name: {{ include "wordpress.fullname" . }}
-  labels:
-    {{- include "wordpress.labels" . | nindent 4 }}
-spec:
-  type: {{ .Values.ServiceALB.type }}
-  ports:
-    {{- toYaml .Values.ServiceALB.ports | nindent 4 }}
-  selector:
-    {{- toYaml .Values.ServiceALB.selector | nindent 4 }}
 {{- end }}
