@@ -82,19 +82,8 @@ Deployment:
       platform/role: application
 
 # ---------------------------------------------------------------------------------------------------------
-# service (cluster-ip)
+# service
 Service:
-  create: false
-  type: ClusterIP
-  ports:
-    - targetPort: 80
-      port: 80
-  selector:
-    platform/role: application
-
-# ---------------------------------------------------------------------------------------------------------
-# service (node)
-ServiceNode:
   create: true
   type: NodePort
   ports:

@@ -1,4 +1,3 @@
----
 {{- if .Values.Service.create -}}
 apiVersion: v1
 kind: Service
@@ -6,27 +5,10 @@ metadata:
   name: {{ include "wordpress.fullname" . }}
   labels:
     {{- include "wordpress.labels" . | nindent 4 }}
-  namespace: {{ .Values.namespace }}
 spec:
   type: {{ .Values.Service.type }}
   ports:
     {{- toYaml .Values.Service.ports | nindent 4 }}
   selector:
     {{- toYaml .Values.Service.selector | nindent 4 }}
-{{- end }}
-
----
-{{- if .Values.ServiceNode.create -}}
-apiVersion: v1
-kind: Service
-metadata:
-  name: {{ include "wordpress.fullname" . }}
-  labels:
-    {{- include "wordpress.labels" . | nindent 4 }}
-spec:
-  type: {{ .Values.ServiceNode.type }}
-  ports:
-    {{- toYaml .Values.ServiceNode.ports | nindent 4 }}
-  selector:
-    {{- toYaml .Values.ServiceNode.selector | nindent 4 }}
 {{- end }}
