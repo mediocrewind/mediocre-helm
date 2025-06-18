@@ -4,6 +4,9 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: {{ include "mariadb.fullname" . }}
+  namespace: {{ .Values.namespace }}
+  labels:
+    {{- include "mariadb.labels" . | nindent 4 }}
 spec: 
   accessModes:
     - ReadWriteOnce
