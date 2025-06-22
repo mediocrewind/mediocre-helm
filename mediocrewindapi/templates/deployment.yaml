@@ -1,0 +1,41 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "mediocrewindapi.fullname" . }}
+  namespace: {{ .Values.namespace }}
+  labels:
+    {{- include "mediocrewindapi.labels" . | nindent 4 }}
+spec:
+  strategy:
+    {{- toYaml .Values.Deployment.strategy | nindent 4 }}
+  template:
+    metadata:
+      name: {{ include "mediocrewindapi.fullname" . }}
+      labels:
+        {{- include "mediocrewindapi.labels" . | nindent 8 }}
+    spec:
+      serviceAccountName: {{ include "mediocrewindapi.serviceAccountName" . }}
+      initContainers:
+      containers:
+        - name: mediocrewindapi
+          image: {{ .Values.Deployment.containers.main.image }}:{{ .Values.Deployment.containers.main.tag }}
+          imagePullPolicy: {{ .Values.Deployment.containers.main.imagePullPolicy }}
+          ports:
+            {{- toYaml .Values.Deployment.containers.main.ports | nindent 12 }}
+          resources:
+            {{- toYaml .Values.Deployment.containers.main.resources | nindent 12 }}
+          envFrom:
+            - configMapRef:
+                name: {{ include "mediocrewindapi.fullname" . }}
+      securityContext:
+        {{- toYaml .Values.Deployment.podSecurityContext | nindent 8 }}
+      imagePullSecrets:
+        {{- toYaml .Values.Deployment.imagePullSecrets | nindent 8  }}
+      tolerations:
+        {{- toYaml .Values.Deployment.tolerations | nindent 8 }}
+  {{- if not .Values.HorizontalPodAutoscaler.enabled  }}
+  replicas: {{ .Values.Deployment.replicas }}
+  {{- end }}
+  selector:
+    {{- toYaml .Values.Deployment.selector | nindent 4 }}

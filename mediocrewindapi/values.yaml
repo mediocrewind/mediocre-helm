@@ -1,0 +1,95 @@
+# ---------------------------------------------------------------------------------------------------------
+# base configuration
+nameOverride: "mediocrewindapi"
+fullnameOverride: "mediocrewindapi"
+role: "application"
+namespace: "platform"
+
+# ---------------------------------------------------------------------------------------------------------
+# serviceaccount
+ServiceAccount:
+  name: ""
+  create: true
+  annotations: {}
+  automount: true
+
+# ---------------------------------------------------------------------------------------------------------
+# role
+Role:
+  rules:
+    - apiGroups: [""]
+      resources: ["configmaps","secrets"]
+      verbs: ["list","get"]
+
+# ---------------------------------------------------------------------------------------------------------
+# configmap
+ConfigMap:
+  data:
+    APP_COLOR: black
+
+# ---------------------------------------------------------------------------------------------------------
+# deployment
+Deployment:
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 2
+      maxUnavailable: 1
+  containers:
+    main:
+      image: "487835535578.dkr.ecr.ap-southeast-1.amazonaws.com/app-api"
+      tag: "latest"
+      imagePullPolicy: "Always"
+      ports:
+        - containerPort: 8080
+      resources:
+        requests:
+          memory: "256M"
+          cpu: 0.1
+        limits:
+          memory: "500M"
+          cpu: .5
+      securityContext:
+        runAsUser: 1000
+        runAsNonRoot: true
+  podSecurityContext:
+    fsGroup: 1000
+  imagePullSecrets:
+    - name: mediocre-ecr-login
+  tolerations:
+    - key: "platform/role"
+      operator: "Equal"
+      value: "application"
+      effect: "NoExecute"
+  replicas: 1
+  selector:
+    matchLabels:
+      platform/role: application
+
+# ---------------------------------------------------------------------------------------------------------
+# service (node)
+Service:
+  create: true
+  type: NodePort
+  ports:
+    - targetPort: 8080
+      port: 8080
+      nodePort: 30080
+  selector:
+    platform/role: application
+
+# ---------------------------------------------------------------------------------------------------------
+# ingress
+CloudIngress:
+  create: false
+
+# ---------------------------------------------------------------------------------------------------------
+# horizontalpodautoscaler
+HorizontalPodAutoscaler:
+  enabled: false
+  spec:
+    minReplicas: 1
+    maxReplicas: 4
+    metrics:
+      targetCPUUtilizationPercentage: 70
+      targetMemoryUtilizationPercentage: 85
