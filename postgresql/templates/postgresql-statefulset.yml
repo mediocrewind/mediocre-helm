@@ -23,12 +23,16 @@ spec:
           imagePullPolicy: {{ .Values.StatefulSet.containers.postgresql.imagePullPolicy }}
           resources:
             {{- toYaml .Values.StatefulSet.containers.postgresql.resources | nindent 12 }}
-          env:
-            {{- toYaml .Values.StatefulSet.containers.postgresql.env | nindent 12 }}
+          envFrom:
+            - configMapRef:
+                name: {{ include "postgresql.fullname" . }}
           volumeMounts:
             {{- toYaml .Values.StatefulSet.containers.postgresql.volumeMounts | nindent 12 }}
       volumes:
-        {{- toYaml .Values.StatefulSet.volumes | nindent 8  }}     
+        {{- toYaml .Values.StatefulSet.volumes | nindent 8  }}
+        - name: {{ include "postgresql.fullname" . }}
+          configMap:
+            name: {{ include "postgresql.fullname" . }}
       securityContext:
         {{- toYaml .Values.StatefulSet.securityContext | nindent 8 }}
       imagePullSecrets:

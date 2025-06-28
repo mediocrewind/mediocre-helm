@@ -2,7 +2,7 @@
 # base configuration
 nameOverride: "mediocre-db-postgresql"
 fullnameOverride: "mediocre-db-postgresql"
-namespace: "monitoring"
+namespace: "platform"
 role: "database"
 
 # ---------------------------------------------------------------------------------------------------------
@@ -14,31 +14,17 @@ serviceAccount:
 
 # ---------------------------------------------------------------------------------------------------------
 # configmap - database
+configMapPostgres:
+   data:
+    POSTGRES_PASSWORD: "T3st2025214" 
+
+# ---------------------------------------------------------------------------------------------------------
+# configmap - database
 configMapDatabase:
   data:
     init.sql: |-
-      -- Create the database if it does not exist
-      DO
-      $$
-      BEGIN
-          IF NOT EXISTS (SELECT FROM pg_database WHERE datname = 'grafana') THEN
-              CREATE DATABASE grafana;
-          END IF;
-      END
-      $$;
-      
-      -- Create the user if it does not exist
-      DO
-      $$
-      BEGIN
-          IF NOT EXISTS (SELECT FROM pg_catalog.pg_user WHERE usename = 'grafana') THEN
-              CREATE USER grafana WITH PASSWORD 'H3ll0Th3r3*_';
-          END IF;
-      END
-      $$;
-      
-      -- Grant privileges
-      GRANT ALL PRIVILEGES ON DATABASE grafana TO grafana;
+      CREATE SCHEMA grafana;
+      CREATE SCHEMA keycloak;
 
 # ---------------------------------------------------------------------------------------------------------
 # role
@@ -72,11 +58,17 @@ StatefulSet:
       volumeMounts:
         - mountPath: /var/lib/postgresql/data
           name: db-data
+        - mountPath: /docker-entrypoint-initdb.d/init.sql
+          name: init-sql
+          subPath: init.sql     
   volumes:
     - name: db-data
       hostPath:
         path: /opt/kube/postgresql
         type: Directory
+    - name: init-sql
+      configMap:
+        name: postgresql-init-script
   securityContext:
     fsGroup: 1000
   imagePullSecrets:
