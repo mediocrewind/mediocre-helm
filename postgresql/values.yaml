@@ -104,3 +104,14 @@ ServiceNode:
       nodePort: 30432
   selector:
     app.kubernetes.io/name: "mediocre-db-postgresql"
+
+# ---------------------------------------------------------------------------------------------------------
+# storageclass
+StorageClass:
+  create: false
+
+# ---------------------------------------------------------------------------------------------------------
+# persistentvolumeclaim
+PersistentVolumeClaim:
+  create: false
+  storage: 4Gi

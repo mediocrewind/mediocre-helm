@@ -1,0 +1,17 @@
+---
+{{- if .Values.PersistentVolumeClaim.create -}}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "postgresql.fullname" . }}
+  namespace: {{ .Values.namespace }}
+  labels:
+    {{- include "postgresql.labels" . | nindent 4 }}
+spec: 
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: {{ include "postgresql.fullname" . }}
+  resources: 
+    requests:
+      storage: {{ .Values.PersistentVolumeClaim.storage }}
+{{- end }}

@@ -1,0 +1,9 @@
+---
+{{- if .Values.StorageClass.create -}}
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata: 
+  name: {{ include "postgresql.serviceAccountName" . }}
+provisioner: ebs.csi.aws.com
+volumeBindingMode: WaitForFirstConsumer
+{{- end }}
