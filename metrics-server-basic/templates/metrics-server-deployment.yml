@@ -1,0 +1,42 @@
+apiVersion:  apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "metrics-server.fullname" . }}
+  namespace: {{ .Values.namespace }}
+  labels:
+    {{- include "metrics-server.labels" . | nindent 4 }}
+spec:
+  selector:
+    {{- toYaml .Values.Deployment.selector | nindent 4 }}
+  strategy:
+    {{- toYaml .Values.Deployment.strategy | nindent 4 }}
+  template:
+    metadata:
+      name: {{ include "metrics-server.fullname" . }}
+      labels:
+        {{- include "metrics-server.labels" . | nindent 8 }}
+    spec:
+      serviceAccountName: {{ include "metrics-server.serviceAccountName" . }}
+      priorityClassName: {{ .Values.Deployment.priorityClassName }}
+      containers:
+        - name: metrics-server
+          image: {{ .Values.Deployment.containers.metricsServer.image }}:{{ .Values.Deployment.containers.metricsServer.tag }}
+          imagePullPolicy: {{ .Values.Deployment.containers.metricsServer.imagePullPolicy }}
+          resources:
+            {{- toYaml .Values.Deployment.containers.metricsServer.resources | nindent 12 }}
+          ports:
+            {{- toYaml .Values.Deployment.containers.metricsServer.ports | nindent 12 }}
+          volumeMounts:
+            {{- toYaml .Values.Deployment.containers.metricsServer.volumeMounts | nindent 12 }}
+          readinessProbe:
+            {{- toYaml .Values.Deployment.containers.metricsServer.readinessProbe | nindent 12 }}
+          livenessProbe:
+            {{- toYaml .Values.Deployment.containers.metricsServer.livenessProbe | nindent 12 }}
+          securityContext:
+            {{- toYaml .Values.Deployment.containers.metricsServer.securityContext | nindent 12 }}
+          args:
+            {{- toYaml .Values.Deployment.containers.metricsServer.args | nindent 12 }}
+      volumes:
+        {{- toYaml .Values.Deployment.volumes | nindent 8 }}
+      nodeSelector:
+        {{- toYaml .Values.Deployment.nodeSelector | nindent 8 }}

@@ -1,0 +1,23 @@
+{{- if .Values.CloudIngress.create -}}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ include "keycloak.fullname" . }}
+  labels:
+    {{- include "keycloak.labels" . | nindent 4 }}
+  namespace: {{ .Values.namespace }}  
+  annotations:
+    {{- toYaml .Values.CloudIngress.annotations | nindent 4 }}
+spec:
+  ingressClassName: alb
+  rules:
+    - http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ include "keycloak.fullname" . }}
+                port:
+                  number: 8080
+{{- end }}

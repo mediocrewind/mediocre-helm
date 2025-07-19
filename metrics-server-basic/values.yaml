@@ -1,0 +1,119 @@
+# ---------------------------------------------------------------------------------------------------------
+# base configuration
+nameOverride: "metrics-server"
+fullnameOverride: "metrics-server"
+namespace: kube-system
+
+# ---------------------------------------------------------------------------------------------------------
+# serviceaccount
+serviceAccount:
+  name: ""
+  create: true
+  automount: true
+
+# ---------------------------------------------------------------------------------------------------------
+# clusterrole
+ClusterRole:
+  aggregatedMetricsReader:
+    rules:
+      - apiGroups: ["metrics.k8s.io"]   
+        resources: ["pods","nodes"]
+        verbs: ["get","list","watch"]
+  metricsServer:
+    rules:
+      - apiGroups: [""]
+        resources: ["nodes/metrics"]
+        verbs: ["get"]
+      - apiGroups: [""]
+        resources: ["pods","nodes"]
+        verbs: ["get","list","watch"]
+
+# ---------------------------------------------------------------------------------------------------------
+# deployment
+Deployment:
+  selector:
+    matchLabels:
+      k8s-app: metrics-server
+  strategy:
+    rollingUpdate:
+      maxUnavailable: 0 
+  serviceAccountName: metrics-server
+  priorityClassName: system-cluster-critical
+  containers:
+    metricsServer:
+      image: "registry.k8s.io/metrics-server/metrics-server"
+      tag: "v0.7.2"
+      imagePullPolicy: "IfNotPresent"    
+      resources:
+        requests:
+          cpu: 100m
+          memory: 200Mi
+      ports:
+        - containerPort: 10250
+          name: https
+          protocol: TCP
+      volumeMounts:
+        - mountPath: /tmp
+          name: tmp-dir
+      readinessProbe:
+        failureThreshold: 3
+        httpGet:
+          path: /readyz
+          port: https
+          scheme: HTTPS
+        initialDelaySeconds: 20
+        periodSeconds: 10
+      livenessProbe:
+        failureThreshold: 3
+        httpGet:
+          path: /livez
+          port: https
+          scheme: HTTPS
+        periodSeconds: 10
+      securityContext:
+        allowPrivilegeEscalation: false
+        capabilities:
+          drop:
+          - ALL
+        readOnlyRootFilesystem: true
+        runAsNonRoot: true
+        runAsUser: 1000
+        seccompProfile:
+          type: RuntimeDefault
+      args:
+        - --cert-dir=/tmp
+        - --secure-port=10250
+        - --kubelet-preferred-address-types=InternalIP,ExternalIP,Hostname
+        - --kubelet-use-node-status-port
+        - --metric-resolution=15s
+        - --kubelet-insecure-tls
+  volumes:
+   -  name: tmp-dir
+      emptyDir: {}
+  nodeSelector:
+     kubernetes.io/os: linux
+
+# ---------------------------------------------------------------------------------------------------------
+# service
+Service:
+  spec:
+    ports:
+      - name: https
+        port: 443
+        protocol: TCP
+        targetPort: https
+    selector:
+      k8s-app: metrics-server
+
+# ---------------------------------------------------------------------------------------------------------
+# apiservice
+APIService:
+  spec:
+    group: metrics.k8s.io
+    groupPriorityMinimum: 100
+    insecureSkipTLSVerify: true
+    service:
+      name: metrics-server
+      namespace: kube-system
+    version: v1beta1
+    versionPriority: 100

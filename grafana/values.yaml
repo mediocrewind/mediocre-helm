@@ -870,19 +870,16 @@ grafana.ini:
     domain: "{{ if (and .Values.ingress.enabled .Values.ingress.hosts) }}{{ tpl (.Values.ingress.hosts | first) . }}{{ else }}''{{ end }}"
   database:
     type: postgres
-    host: mediocre-db-postgresql.monitoring.svc.cluster.local:5432
-    name: postgres
-    user: postgres
-    password: T3st2025214
+    url: "postgres://mediocre:T3st2025*_@mediocre-db-postgresql.platform.svc.cluster.local:5432/mediocre?search_path=grafana"
   auth.generic_oauth:
     enabled: true
     name: Keycloak
     allow_sign_up: true
-    client_id: grafanav2
-    client_secret: C3lhK2YTnXSnw1DCetgEXAx68YUo5Vaf
-    auth_url: http://192.168.122.132:30180/realms/grafanav2/protocol/openid-connect/auth
-    token_url: http://192.168.122.132:30180/realms/grafanav2/protocol/openid-connect/token
-    api_url: http://192.168.122.132:30180/realms/grafanav2/protocol/openid-connect/userinfo
+    client_id: grafana
+    client_secret: RTduAIkc9fFLUjWIVlxMZc6KqjT9jRqx
+    auth_url: http://192.168.122.132:30180/realms/mediocre/protocol/openid-connect/auth
+    token_url: http://192.168.122.132:30180/realms/mediocre/protocol/openid-connect/token
+    api_url: http://192.168.122.132:30180/realms/mediocre/protocol/openid-connect/userinfo
     oauth_allow_insecure_email_lookup: true
     scopes: openid email
     role_attribute_path: contains(realm_access.roles[*], 'grafana-admin') && 'Admin' || contains(realm_access.roles[*], 'grafana-editor') && 'Editor' || 'Viewer'
