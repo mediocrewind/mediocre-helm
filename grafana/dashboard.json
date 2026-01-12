@@ -1,0 +1,25 @@
+{
+  "dashboard": {
+    "id": null,
+    "uid": "sample-dashboard-001",
+    "title": "Sample Dashboard",
+    "timezone": "browser",
+    "panels": [
+      {
+        "id": 1,
+        "type": "text",
+        "title": "Welcome Panel",
+        "gridPos": { "x": 0, "y": 0, "w": 24, "h": 4 },
+        "options": {
+          "content": "This is a sample dashboard created by an admin service account.",
+          "mode": "markdown"
+        }
+      }
+    ],
+    "schemaVersion": 38,
+    "version": 0
+  },
+  "folderId": 0,
+  "overwrite": true
+}
+
